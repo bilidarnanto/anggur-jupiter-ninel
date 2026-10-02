@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Budidaya Anggur Jupiter &amp; Ninel — Pasuruan, Jawa Timur</title>
+<meta name="description" content="Panduan lengkap cultivation anggur impor Jupiter dan Ninel untuk skala backyard di Pasuruan, Jawa Timur. Kalender 12 bulan, SOP stepwise, mesin diagnosa gejala, kalkulator dosis.">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍇</text></svg>">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <span class="brand-icon">🍇</span>
+      <div>
+        <h1>Sistem Budidaya Anggur</h1>
+        <p>Jupiter &amp; Ninel — Pasuruan, Jawa Timur</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Skala</span>
+        <span class="meta-value">Backyard / Polybag</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Iklim</span>
+        <span class="meta-value">Tropis, 2 musim</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Target</span>
+        <span class="meta-value">2 siklus setahun</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs-wrap">
+  <div class="wrap">
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-tab="ringkasan">Ringkasan</button>
+      <button class="tab" data-tab="varietas">Varietas</button>
+      <button class="tab" data-tab="kalender">Kalender</button>
+      <button class="tab" data-tab="checklist">Checklist</button>
+      <button class="tab" data-tab="panduan">Panduan</button>
+      <button class="tab" data-tab="diagnosa">Diagnosa</button>
+      <button class="tab" data-tab="kalkulator">Kalkulator</button>
+      <button class="tab" data-tab="pustaka">Pustaka</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap main">
+
+  <!-- ============ RINGKASAN ============ -->
+  <section class="panel active" id="ringkasan">
+    <h2 class="section-title">Ringkasan</h2>
+
+    <div class="alert alert-info">
+      <b>Dokumen ini disusun untuk backyard di Pasuruan dan sekitarnya.</b>
+      Data varietas diambil dari deskripsi breeder (Arkansas untuk Jupiter, Kraynov untuk Ninel) dan
+      literatur hortikultura. Dosis pupuk dan pestisida perlu disesuaikan dengan kondisi lapangan.
+      <b>Selalu baca label produk</b> dan uji pada sebagian kecil tanaman sebelum aplicado widely.
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Kenapa Jupiter dan Ninel?</h3>
+        <p class="muted">Keduanya varietas buah meja tanpa specialty wine yang saat ini paling
+        banyak dibudidayakan di pekarangan Jawa Timur. Keduanya cocok untuk iklim tropis
+        karena hari efektif yang tersedia cukup untuk satu siklus musim kemarau.</p>
+        <ul class="tick-list">
+          <li>Jupiter: buah kecil, rasa paling konsisten, tahan jamur tinggi, hampir tidak diserang tawon.</li>
+          <li>Ninel: buah besar (12–15 gram), hasil marketable tinggi, tapi butuh.air lebih dan proteksi hama lebih.</li>
+          <li>Keduanya bisa dipanen dua kali setahun dengan pruning_SELARAS yang tepat.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Tiga prinsip yang menentukan hasil</h3>
+        <ol class="numbered">
+          <li><b>Pruning adalah kunci utama.</b> Menentukan kapan panen, seberapa besar buah, dan berapa banyak.</li>
+          <li><b>Musim hujan adalah musuh.</b> Di Pasuruan, November sampai April adalah masa pathogen. fought dengan sanitasi dan airflow, bukan semprot terus-menerus.</li>
+          <li><b>Musim kemarau adalah kesempatan.</b> Mei sampai Oktober adalah masa-producing terbaik karena fruitset bisa jalan tanpa gangguan.</li>
+        </ol>
+      </div>
+    </div>
+
+    <h3 class="sub-title">Peta siklus tahunan</h3>
+    <div class="cycle-map" id="cycle-map"></div>
+
+    <h3 class="sub-title">Cara membaca pola musim</h3>
+    <div class="grid-3" id="musim-cards"></div>
+  </section>
+
+  <!-- ============ VARIETAS ============ -->
+  <section class="panel" id="varietas">
+    <h2 class="section-title">Profil Varietas</h2>
+    <div class="grid-2" id="profil-cards"></div>
+
+    <h3 class="sub-title">Perbandingan langsung</h3>
+    <div class="table-wrap">
+      <table class="cmp" id="cmp-table"></table>
+    </div>
+
+    <div class="alert alert-warn">
+      <b>Catatan penting soal Ninel.</b> Nama resmi varietas ini adalah <b>Nizina-2</b>.
+      Di daftar variety exceedance, “Ninel” adalah nama dagang yang lebih dikenal di pasar.
+      Pastikan bibit yang Anda beli benar-benar Nizina-2, karena beberapa turunan punya karakter berbeda.
+    </div>
+  </section>
+
+  <!-- ============ KALENDER ============ -->
+  <section class="panel" id="kalender">
+    <h2 class="section-title">Kalender 12 Bulan</h2>
+    <p class="muted">Disusun untuk pola musim Pasuruan: hujan November–April, kemarau Mei–Oktober.
+    Siklus panen pertama dipusatkan di Juni, siklus kedua di November–Desember.</p>
+
+    <div class="month-nav" id="month-nav"></div>
+    <div id="month-detail"></div>
+  </section>
+
+  <!-- ============ CHECKLIST ============ -->
+  <section class="panel" id="checklist">
+    <div class="panel-head">
+      <h2 class="section-title">Checklist Task</h2>
+      <div class="panel-actions">
+        <span class="muted small">Tersimpan otomatis di browser Anda</span>
+        <button class="btn btn-ghost" id="checklist-reset">Reset</button>
+      </div>
+    </div>
+    <p class="muted">Centang setiap tugas yang sudah selesai. Progres tersimpan di localStorage,
+    jadi tetap ada meski halaman ditutup. Bulan berjalan ditandai otomatis.</p>
+    <div id="checklist-body"></div>
+  </section>
+
+  <!-- ============ PANDUAN ============ -->
+  <section class="panel" id="panduan">
+    <h2 class="section-title">Panduan Step-by-Step</h2>
+    <p class="muted">Sepuluh langkah dari memilih lokasi sampai panen.</p>
+    <div id="panduan-body"></div>
+  </section>
+
+  <!-- ============ DIAGNOSA ============ -->
+  <section class="panel" id="diagnosa">
+    <h2 class="section-title">Diagnosa Gejala</h2>
+    <p class="muted">Pilih gejala yang Anda temukan pada tanaman. Sistem akan
+    mencocokkan dengan 15 aturan dan menampilkan diagnosis beserta tindakan.
+    Semakin lengkap gejala yang dipilih, semakin akurat hasilnya.</p>
+    <div class="diag-layout">
+      <div class="diag-picker">
+        <h3>1. Pilih gejala yang diamati</h3>
+        <div id="diag-gejala" class="diag-list"></div>
+      </div>
+      <div class="diag-result">
+        <h3>2. Hasil diagnosa</h3>
+        <div id="diag-out"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KALKULATOR ============ -->
+  <section class="panel" id="kalkulator">
+    <h2 class="section-title">Kalkulator</h2>
+
+    <h3 class="sub-title">Kebutuhan pupuk</h3>
+    <p class="muted">Hitung total kebutuhan untuk seluruh tanaman Anda. Dosis dasar per pohon
+    mengacu pada praktik grower backyard; sesuaikan setelah melihat respons tanaman.</p>
+    <form class="calc-form" id="calc-form">
+      <div class="field">
+        <label for="calc-jumlah">Jumlah tanaman</label>
+        <input type="number" id="calc-jumlah" min="0" value="10">
+      </div>
+      <div class="field">
+        <label for="calc-pupuk">Jenis pupuk</label>
+        <select id="calc-pupuk">
+          <option value="urea">Urea (46% N)</option>
+          <option value="npk161616" selected>NPK 16-16-16</option>
+          <option value="npk161620">NPK 16-16-20</option>
+          <option value="npk00060">NPK 0-0-60 (Muriate of Potash)</option>
+          <option value="mkp">MKP (kocor daun)</option>
+          <option value="karate">KARATE PLUS BORONI (kocor daun)</option>
+          <option value="kalinitra">KALINITRA / KNO3 (kocor daun)</option>
+          <option value="pupukOrganik">Pupuke Matang (organik)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="calc-dosis">Dosis dasar per pohon (gram)</label>
+        <input type="number" id="calc-dosis" min="0" value="20">
+      </div>
+      <div class="field">
+        <label for="calc-liter">Total air (liter, untuk kocor daun)</label>
+        <input type="number" id="calc-liter" min="0" value="20">
+      </div>
+    </form>
+    <div id="calc-out" class="calc-out"></div>
+
+    <h3 class="sub-title">Perkiraan tanggal panen</h3>
+    <p class="muted">Masukkan tanggal pruning pembuahan. Perkiraan dihitung dari siklus
+    90 hari untuk Jupiter dan 110 hari untuk Ninel, yaitu rentang yang lazim dilaporkan untuk
+    kondisi tropis. Selalu verifikasi dengan pengukuran Brix.</p>
+    <form class="calc-form" id="panen-form">
+      <div class="field">
+        <label for="panen-tgl">Tanggal pruning pembuahan</label>
+        <input type="date" id="panen-tgl">
+      </div>
+      <button type="submit" class="btn">Hitung perkiraan panen</button>
+    </form>
+    <div id="panen-out" class="calc-out"></div>
+
+    <h3 class="sub-title">Tabel dosis referensi</h3>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Fase</th><th>Waktu</th><th>Pupuk</th><th>Dosis</th><th>Interval</th></tr></thead>
+        <tbody>
+          <tr><td>Pembesaran batang</td><td>Sampai umur 8 bulan</td><td>NPK 16-16-16 / urea</td><td>20 gram per pohon</td><td>Setiap 2–4 minggu</td></tr>
+          <tr><td>Pembentukan bunga</td><td>2–4 minggu sebelum bunga mekar</td><td>MKP + KARATE + KALINITRA</td><td>12 g + 24 g + 20 g per 10 L</td><td>2 kali, selisih 3 hari</td></tr>
+          <tr><td>Pembesaran buah</td><td>Bunga sudah menjadi buah</td><td>NPK 16-16-20</td><td>20 gram per pohon</td><td>Setiap 2 minggu</td></tr>
+          <tr><td>Pembuatan gula</td><td>2–4 minggu sebelum panen</td><td>KALINITRA / NPK 0-0-60</td><td>20 gram per pohon</td><td>Setiap 2 minggu</td></tr>
+          <tr><td>Organik</td><td>Sepanjang tahun</td><td>Pupuke matang</td><td>1–2 kg per pohon</td><td>Setiap 3 bulan</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ PUSTAKA ============ -->
+  <section class="panel" id="pustaka">
+    <h2 class="section-title">Daftar Pustaka</h2>
+    <p class="muted">Sumber yang menjadi dasar isi sistem ini, dibagi dalam empat kelompok:
+    pedoman resmi, jurnal penelitian, sumber deskriptif varietas, dan referensi teknis internasional.</p>
+    <div id="pustaka-body"></div>
+    <div class="alert alert-warn">
+      <b>Disclaimer.</b> Informasi dosis pupuk dan jadwal penyemaan dalam sistem ini
+      disusun dari gabungan literatur dan praktik umum hobiis, belum divalidasi lewat
+      percobaan terkontrol di lokasi Anda. Selalu lakukan uji pada sebagian kecil tanaman
+      sebelum menerapkan secara luas, dan ikuti label resmi produk pestisida.
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p><b>Sistem Budidaya Anggur Jupiter &amp; Ninel</b> — disusun untuk praktisi backyard di Pasuruan, Jawa Timur.</p>
+    <p class="muted small">Dibangun dari literatur hortikultura, deskripsi breeders, dan pedoman Kementerian Pertanian.
+    Gunakan sebagai panduan kerja, bukan sebagai pengganti uji lapangan.</p>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/render.js"></script>
+</body>
+</html>
