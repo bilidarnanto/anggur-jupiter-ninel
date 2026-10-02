@@ -1,0 +1,65 @@
+[
+ {
+  "no": "I",
+  "judul": "The Grape Industry of the United States",
+  "id": "Pengantar dan Klasifikasi Varietas",
+  "file": "perpustakaan/buku/manual-bab-I.txt",
+  "kata": 3516
+ },
+ {
+  "no": "II",
+  "judul": "Planting and Care of Vines",
+  "id": "Penanaman dan Perawatan Vines",
+  "file": "perpustakaan/buku/manual-bab-II.txt",
+  "kata": 6048
+ },
+ {
+  "no": "III",
+  "judul": "Propagation",
+  "id": "Pembibitan dan Perbanyakan",
+  "file": "perpustakaan/buku/manual-bab-III.txt",
+  "kata": 8139
+ },
+ {
+  "no": "IV",
+  "judul": "Pruning",
+  "id": "Pemangkasan (Pruning)",
+  "file": "perpustakaan/buku/manual-bab-IV.txt",
+  "kata": 3593
+ },
+ {
+  "no": "V",
+  "judul": "Trellises",
+  "id": "Trellis dan Penopangan",
+  "file": "perpustakaan/buku/manual-bab-V.txt",
+  "kata": 7850
+ },
+ {
+  "no": "VI",
+  "judul": "The Setting of the Fruit",
+  "id": "Pembuahan dan Fruit Setting",
+  "file": "perpustakaan/buku/manual-bab-VI.txt",
+  "kata": 3183
+ },
+ {
+  "no": "VIII",
+  "judul": "Diseases of the Grape",
+  "id": "Penyakit Tanaman Anggur",
+  "file": "perpustakaan/buku/manual-bab-VIII.txt",
+  "kata": 7969
+ },
+ {
+  "no": "IX",
+  "judul": "Insect Enemies of the Grape",
+  "id": "Hama Tanaman Anggur",
+  "file": "perpustakaan/buku/manual-bab-IX.txt",
+  "kata": 10061
+ },
+ {
+  "no": "X",
+  "judul": "Harvesting and Handling",
+  "id": "Panen dan Penanganan Pascapanen",
+  "file": "perpustakaan/buku/manual-bab-X.txt",
+  "kata": 2381
+ }
+]

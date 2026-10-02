@@ -47,6 +47,7 @@
       <button class="tab" data-tab="diagnosa">Diagnosa</button>
       <button class="tab" data-tab="kalkulator">Kalkulator</button>
       <button class="tab" data-tab="pustaka">Pustaka</button>
+      <button class="tab" data-tab="perpustakaan">Perpustakaan</button>
     </div>
   </div>
 </nav>
@@ -238,6 +239,41 @@
     </div>
   </section>
 
+  <!-- ============ PERPUSTAKAAN ============ -->
+  <section class="panel" id="perpustakaan">
+    <h2 class="section-title">Perpustakaan</h2>
+    <p class="muted">Baca langsung di dalam halaman ini, tanpa keluar dari situs.
+    Dokumen yang berstatus open access atau domain publik di-host di repository ini.</p>
+
+    <div id="perpus-body"></div>
+
+    <!-- PEMBACA BAB -->
+    <div class="reader-shell" id="reader-shell" hidden>
+      <div class="reader-bar-track"><div class="reader-bar" id="reader-bar"></div></div>
+      <div class="reader-head">
+        <div>
+          <h3 id="reader-judul"></h3>
+          <p class="reader-sub" id="reader-sub"></p>
+        </div>
+        <button class="btn btn-ghost" id="reader-close">Tutup</button>
+      </div>
+      <div class="reader-toolbar">
+        <div class="reader-search-wrap">
+          <input type="search" id="reader-cari" placeholder="Cari di dalam bab ini…">
+        </div>
+        <div class="reader-fs">
+          <button id="reader-fs-minus" title="Perkecil teks">A−</button>
+          <span id="reader-fs">16px</span>
+          <button id="reader-fs-plus" title="Perbesar teks">A+</button>
+        </div>
+        <span class="reader-pos" id="reader-pos">0%</span>
+      </div>
+      <div class="reader-scroll" id="reader-scroll">
+        <article class="reader-isi" id="reader-isi"></article>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -249,7 +285,9 @@
 </footer>
 
 <script src="assets/js/data.js"></script>
+<script src="assets/js/library.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/render.js"></script>
+<script src="assets/js/reader.js"></script>
 </body>
 </html>
