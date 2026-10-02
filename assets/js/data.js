@@ -543,24 +543,24 @@ const HARGA_PASAR = [
     segmen: 'Anggur lokal — TINGKAT PETANI',
     contoh: 'Prabu Bestari grade A',
     harga: 15000, hargaMax: 20000, satuan: 'kg',
-    tanggal: 'Studi UB',
-    catatan: 'Ini harga yang benar-benar diterima petani, bukan harga pasar.',
+    tanggal: 'Studi UB (waktu tertentu)',
+    catatan: 'Harga yang diterima penjual petani, dari studi kelayakan di Desa Banjarsari, Probolinggo. Bukan harga Pasuruan terkini, dan waktu datanya tertentu.',
     sumber: 'https://repository.ub.ac.id/128827/1/051100893.pdf'
   },
   {
     segmen: 'Anggur lokal — TINGKAT PETANI',
     contoh: 'Prabu Bestari grade B',
     harga: 10000, satuan: 'kg',
-    tanggal: 'Studi UB',
-    catatan: 'Grade B jauh lebih murah. Kualitas menentukan margin.',
+    tanggal: 'Studi UB (waktu tertentu)',
+    catatan: 'Harga yang diterima penjual petani grade B. Sama seperti grade A, ini data studi akademik, bukan harga pasar terkini.',
     sumber: 'https://repository.ub.ac.id/128827/1/051100893.pdf'
   },
   {
     segmen: 'Anggur lokal — kebun premium',
     contoh: 'Anggur petik langsung / agrowisata',
     harga: 100000, satuan: 'kg',
-    tanggal: '2025',
-    catatan: 'Harga di kebun dengan model wisata petik bisa jauh lebih tinggi dari harga pasar.',
+    tanggal: 'Satu titik observasi, 2025',
+    catatan: 'Sekali observasi pedagang di kebun agrowisata (Instagram, 2025). Satu titik, bukan rata-rata atau survei. Digunakan sebagai signal saja.',
     sumber: 'https://www.instagram.com/p/DQTVSWdiY3a/'
   }
 ];

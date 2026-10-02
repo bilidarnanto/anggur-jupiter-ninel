@@ -640,3 +640,21 @@ body {
   .harga-nilai { text-align: left; }
   .vg-cols, .vg-meta, .usaha-bep { grid-template-columns: 1fr; }
 }
+
+/* ============ HARGA PASAR: BLOK METODOLOGI ============ */
+.harga-metodologi {
+  background: #fdecea;
+  border: 1px solid #e9b4b4;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+.hm-head { display: flex; gap: 14px; align-items: baseline; margin-bottom: 10px; }
+.hm-title { font-weight: 800; font-size: .95em; color: #b03030; text-transform: uppercase; letter-spacing: .3px; }
+.hm-date { font-size: .78em; color: #8a4040; }
+.hm-list { padding-left: 20px; color: #472a2a; }
+.hm-list li + li { margin-top: 6px; }
+
+@media (max-width: 900px) {
+  .harga-metodologi { padding: 12px 12px; }
+}

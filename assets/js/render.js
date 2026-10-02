@@ -80,6 +80,14 @@ function renderVarietasLokal() {
 }
 
 /* ---------- HARGA PASAR ---------- */
+const HARGA_METODOLOGI = [
+  'Data ini bukan harga terkini dan bukan survei terstruktur. Setiap baris dicatat saat ditemukannya, bukan direkap per waktu.',
+  'Harga impor dari pasar ritel Jakarta (2 toko) dan marketplace (1 platform). Itu satu kota dan beberapa outlet, bukan representasi seluruh Indonesia.',
+  'Harga lokal dari studi akademik dan observasi terbatas (satu kebun agrowisata, satu wilayah studi). Harga petani bervariasi menurut gradasi buah, musim, dan jalur jual.',
+  'Semua angka perlu dicek ulang sebelum dipakai untuk keputusan usaha nyata. Perbedaan tahun dan wilayah bisa besar.',
+  'Selisih harga antara tingkat petani dan pasar ritel sebagian besar adalah biaya distribusi (transport, gudang, eceran), bukan nilai tambah dari varietas itu sendiri. Jadi jangan langsung menyimpulkan bahwa satu varietas "lebih untung" hanya dari selisih harga ritel.'
+];
+
 function renderHarga() {
   const box = document.getElementById('harga-body');
   if (!box) return;
@@ -88,6 +96,16 @@ function renderHarga() {
   const maks = Math.max(...HARGA_PASAR.map(h => h.hargaMax || h.harga));
 
   box.innerHTML = `
+    <div class="harga-metodologi">
+      <div class="hm-head">
+        <span class="hm-title">⚠️ Catatan metodologi harga</span>
+        <span class="hm-date">Data harga di situs ini bersifat terbatas — bukan harga terkini, bukan survei, dan hanya dari sumber yang bisa dilacak</span>
+      </div>
+      <ol class="hm-list small">
+        ${HARGA_METODOLOGI.map(m => `<li>${escapeHtml(m)}</li>`).join('')}
+      </ol>
+    </div>
+
     <div class="harga-list">
       ${HARGA_PASAR.map(h => {
         const lebar = Math.max(4, (h.harga / maks) * 100);
@@ -108,8 +126,7 @@ function renderHarga() {
         </div>`;
       }).join('')}
     </div>
-    <p class="muted small">Harga pasar bergerak cepat. Angka di atas adalah catatan pada tanggal yang tertera,
-    bukan harga terkini. Selalu cek harga lokal sebelum mengambil keputusan usaha.</p>`;
+    <p class="muted small">Kalau Anda butuh angka yang bisa dipakai untuk keputusan usaha, jangan pakai angka rata-rata di halaman ini.\n    Kumpulkan sendiri harga petani di lokasi Anda, atau minta data dari kelompok tani / penyuluh setempat.</p>`;
 }
 
 /* ---------- PANDUAN VARIETAS LOKAL ---------- */
