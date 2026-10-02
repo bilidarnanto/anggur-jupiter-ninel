@@ -42,11 +42,14 @@
       <button class="tab active" data-tab="ringkasan">Ringkasan</button>
       <button class="tab" data-tab="varietas">Varietas</button>
       <button class="tab" data-tab="lokal">Varietas Lokal</button>
+      <button class="tab" data-tab="panduanvar">Panduan Lokal</button>
       <button class="tab" data-tab="kalender">Kalender</button>
       <button class="tab" data-tab="checklist">Checklist</button>
       <button class="tab" data-tab="panduan">Panduan</button>
       <button class="tab" data-tab="diagnosa">Diagnosa</button>
       <button class="tab" data-tab="kalkulator">Kalkulator</button>
+      <button class="tab" data-tab="usaha">Kelayakan Usaha</button>
+      <button class="tab" data-tab="harga">Harga Pasar</button>
       <button class="tab" data-tab="pustaka">Pustaka</button>
       <button class="tab" data-tab="riset">Riset &amp; Sumber</button>
       <button class="tab" data-tab="perpustakaan">Perpustakaan</button>
@@ -138,6 +141,23 @@
     </div>
 
     <div class="grid-2" id="lokal-body"></div>
+  </section>
+
+  <!-- ============ PANDUAN VARIETAS LOKAL ============ -->
+  <section class="panel" id="panduanvar">
+    <h2 class="section-title">Panduan Varietas Lokal</h2>
+    <p class="muted">Tiga varietas unggul nasional yang paling layak dipertimbangkan sebagai
+    alternatif atau pelengkap Jupiter dan Ninel — lengkap dengan kekuatan, hal yang perlu
+    diperhatikan, dan kapan sebaiknya memilih masing-masing.</p>
+
+    <div class="alert alert-info">
+      <b>Kenapa mempertimbangkan varietas lokal?</b> Varietas unggul nasional dikembangkan
+      khusus untuk iklim Indonesia, jadi bibitnya jelas asalnya dan sebagian justru lebih cepat
+      berbuah. Jestro AG 86 misalnya panen dalam 95–100 hari, sedangkan varietas impor butuh
+      120–130 hari.
+    </div>
+
+    <div id="panduan-var-body"></div>
   </section>
 
   <!-- ============ KALENDER ============ -->
@@ -253,6 +273,91 @@
           <tr><td>Organik</td><td>Sepanjang tahun</td><td>Pupuk kandang matang</td><td>1–2 kg per pohon</td><td>Setiap 3 bulan</td></tr>
         </tbody>
       </table>
+    </div>
+  </section>
+
+  <!-- ============ KELAYAKAN USAHA ============ -->
+  <section class="panel" id="usaha">
+    <h2 class="section-title">Kalkulator Kelayakan Usaha</h2>
+    <p class="muted">Perkirakan modal awal, laba per tahun, titik balik modal, dan titik impas
+    untuk kebun anggur Anda. Angka acuan diambil dari penelitian usahatani anggur di Probolinggo.</p>
+
+    <div class="alert alert-warn">
+      <b>Ini estimasi kasar, bukan proyeksi bisnis.</b> Hasil panen dan harga sangat bervariasi
+      menurut lokasi, cuaca, kualitas buah, dan jalur pemasaran. Gunakan sebagai gambaran awal,
+      lalu verifikasi dengan biaya nyata di lokasi Anda.
+    </div>
+
+    <form class="calc-form" id="usaha-form">
+      <div class="field">
+        <label for="usaha-jenis">Varietas (untuk mengisi angka acuan)</label>
+        <select id="usaha-jenis">
+          <option value="jupiter">Jupiter</option>
+          <option value="ninel">Ninel</option>
+          <option value="jestro86">Jestro AG 86</option>
+          <option value="jestro60">Jestro AG 60</option>
+          <option value="prabu">Prabu Bestari</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="usaha-jumlah">Jumlah tanaman</label>
+        <input type="number" id="usaha-jumlah" min="0" value="20">
+      </div>
+      <div class="field">
+        <label for="usaha-hasil">Hasil per pohon per panen (kg)</label>
+        <input type="number" id="usaha-hasil" min="0" step="0.5" value="15">
+      </div>
+      <div class="field">
+        <label for="usaha-harga">Harga jual tingkat petani (Rp/kg)</label>
+        <input type="number" id="usaha-harga" min="0" step="1000" value="25000">
+      </div>
+      <div class="field">
+        <label for="usaha-biaya">Biaya awal per pohon (Rp) — bibit, pot, trellis</label>
+        <input type="number" id="usaha-biaya" min="0" step="10000" value="250000">
+      </div>
+      <div class="field">
+        <label for="usaha-ops">Biaya operasional per pohon per tahun (Rp)</label>
+        <input type="number" id="usaha-ops" min="0" step="10000" value="375000">
+      </div>
+      <div class="field">
+        <label for="usaha-panen">Jumlah panen per tahun</label>
+        <input type="number" id="usaha-panen" min="1" max="3" value="2">
+      </div>
+    </form>
+    <div id="usaha-out" class="calc-out"></div>
+
+    <h3 class="sub-title">Acuan dari penelitian</h3>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Keterangan</th><th>Nilai</th><th>Lokasi</th><th>Sumber</th></tr></thead>
+        <tbody id="biaya-body"></tbody>
+      </table>
+    </div>
+    <p class="muted small">Angka-angka di atas dari penelitian akademik di Probolinggo dan sekitarnya.
+    Sebagian data lama (2010), jadi nilainya perlu disesuaikan dengan kondisi sekarang.</p>
+  </section>
+
+  <!-- ============ HARGA PASAR ============ -->
+  <section class="panel" id="harga">
+    <h2 class="section-title">Harga Pasar</h2>
+    <p class="muted">Pembanding harga anggur lokal dan impor. Perhatikan satu hal penting:
+    <b>harga di tingkat petani jauh lebih rendah daripada harga di pasar atau supermarket</b>.
+    Banyak orang salah menghitung untung karena memakai harga ritel.</p>
+
+    <div class="alert alert-warn">
+      <b>Jangan pakai harga supermarket untuk menghitung usaha tani.</b> Petani Prabu Bestari
+      menerima sekitar Rp15.000–20.000/kg untuk grade A, sementara anggur impor dijual
+      Rp100.000–139.000/kg di ritel. Selisihnya sebagian besar dinikmati rantai distribusi,
+      bukan petani.
+    </div>
+
+    <div id="harga-body"></div>
+
+    <div class="alert alert-info">
+      <b>Peluang yang sering terlewat.</b> Model wisata petik langsung atau agrowisata bisa
+      menjual anggur sampai sekitar Rp100.000/kg — jauh di atas harga pasar biasa. Beberapa
+      kebun di Probolinggo sudah menjalankan model ini. Kalau lokasi Anda bisa diakses pembeli,
+      ini cara paling nyata untuk menaikkan margin.
     </div>
   </section>
 

@@ -485,3 +485,194 @@ const STATUS_KLAIM = [
   { klaim: 'Resep media 1:1:1 pupuk kandang:sekam:tanah', status: 'praktik lapangan', sumber: 'Praktik pekebun, belum diuji terkontrol' },
   { klaim: 'Media tanam difermentasi minimal 2 minggu', status: 'praktik lapangan', sumber: 'Praktik umum' }
 ];
+
+/* ---------- HARGA PASAR ANGGUR ----------
+   Harga sangat fluktuatif. Setiap baris dicatat tanggal sumbernya.
+   Catatan penting: harga di tingkat petani jauh lebih rendah daripada
+   harga eceran. Jangan pakai harga supermarket untuk menghitung usaha tani. */
+const HARGA_PASAR = [
+  {
+    segmen: 'Anggur impor — eceran pasar',
+    contoh: 'Anggur merah & hitam Australia',
+    harga: 100000, hargaMax: 125000, satuan: 'kg',
+    tanggal: 'Juni 2026',
+    catatan: 'Naik dari Rp80.000–100.000/kg imbas pelemahan rupiah (saat itu Rp17.944/USD).',
+    sumber: 'https://www.cnnindonesia.com/ekonomi/20260610213346-92-1367696/harga-buah-impor-makin-mahal-gara-gara-rupiah-amblas'
+  },
+  {
+    segmen: 'Anggur impor — premium',
+    contoh: 'Shine Muscat',
+    harga: 139000, satuan: 'kg',
+    tanggal: 'Februari 2026',
+    catatan: 'Kelas premium. Harga tertinggi di pasar ritel.',
+    sumber: 'https://www.instagram.com/reel/DVK7nSfEx0e/'
+  },
+  {
+    segmen: 'Anggur impor — premium',
+    contoh: 'Sweet Globe, Midnight',
+    harga: 119000, satuan: 'kg',
+    tanggal: 'Februari 2026',
+    catatan: 'Ritel modern.',
+    sumber: 'https://www.instagram.com/reel/DVK7nSfEx0e/'
+  },
+  {
+    segmen: 'Anggur impor — eceran online',
+    contoh: 'Anggur merah import 500 g',
+    harga: 126000, satuan: 'kg',
+    tanggal: 'September 2026',
+    catatan: 'Dihitung dari Rp63.000 per 500 g di marketplace.',
+    sumber: 'https://www.blibli.com/jual/anggur-import'
+  },
+  {
+    segmen: 'Anggur lokal — eceran online',
+    contoh: 'Anggur lokal',
+    harga: 48000, satuan: 'kg',
+    tanggal: 'September 2026',
+    catatan: 'Selisih dengan impor masih sekitar 2,5 kali.',
+    sumber: 'https://www.blibli.com/jual/anggur-lokal'
+  },
+  {
+    segmen: 'Anggur Bali — eceran online',
+    contoh: 'Fresh Balinese Grapes',
+    harga: 35900, satuan: 'kg',
+    tanggal: '2026',
+    catatan: 'Varietas lokal Bali, harga bersaing.',
+    sumber: 'https://www.lazada.co.id/tag/harga-anggur-per-kg/'
+  },
+  {
+    segmen: 'Anggur lokal — TINGKAT PETANI',
+    contoh: 'Prabu Bestari grade A',
+    harga: 15000, hargaMax: 20000, satuan: 'kg',
+    tanggal: 'Studi UB',
+    catatan: 'Ini harga yang benar-benar diterima petani, bukan harga pasar.',
+    sumber: 'https://repository.ub.ac.id/128827/1/051100893.pdf'
+  },
+  {
+    segmen: 'Anggur lokal — TINGKAT PETANI',
+    contoh: 'Prabu Bestari grade B',
+    harga: 10000, satuan: 'kg',
+    tanggal: 'Studi UB',
+    catatan: 'Grade B jauh lebih murah. Kualitas menentukan margin.',
+    sumber: 'https://repository.ub.ac.id/128827/1/051100893.pdf'
+  },
+  {
+    segmen: 'Anggur lokal — kebun premium',
+    contoh: 'Anggur petik langsung / agrowisata',
+    harga: 100000, satuan: 'kg',
+    tanggal: '2025',
+    catatan: 'Harga di kebun dengan model wisata petik bisa jauh lebih tinggi dari harga pasar.',
+    sumber: 'https://www.instagram.com/p/DQTVSWdiY3a/'
+  }
+];
+
+/* ---------- REFERENSI BIAYA USAHA TANI ANGGUR ----------
+   Angka dari penelitian akademik. Gunakan sebagai acuan kasar,
+   lalu sesuaikan dengan kondisi lokasi Anda. */
+const BIAYA_REFERENSI = [
+  {
+    keterangan: 'Biaya produksi Prabu Bestari',
+    nilai: 'Rp33.235.153/ha/tahun',
+    lokasi: 'Kota Probolinggo',
+    sumber: 'Maulidah, S. (2010). Agrise, Universitas Brawijaya',
+    catatan: 'Data 2010 — nilai rupiah sudah berubah, tapi struktur biayanya masih relevan.'
+  },
+  {
+    keterangan: 'Biaya produksi usahatani anggur',
+    nilai: 'Rp34.923.417/ha/tahun',
+    lokasi: 'Studi terbaru',
+    sumber: 'Akbar, R. (2026). Agriwana',
+    catatan: 'Angka terbaru, lebih dekat ke kondisi sekarang.'
+  },
+  {
+    keterangan: 'Biaya per satu kali proses produksi',
+    nilai: 'Rp517.677',
+    lokasi: 'Desa Banjarsari, Probolinggo',
+    sumber: 'Analisis kelayakan usahatani anggur Red Prince',
+    catatan: 'Biaya untuk satu siklus produksi.'
+  },
+  {
+    keterangan: 'Titik impas produksi',
+    nilai: '6 kg/pohon',
+    lokasi: 'Kota Probolinggo',
+    sumber: 'Cakrawala Journal',
+    catatan: 'Di bawah 6 kg/pohon, usaha belum balik modal.'
+  },
+  {
+    keterangan: 'Titik impas harga (BEP)',
+    nilai: 'Rp4.000/kg',
+    lokasi: 'Kota Probolinggo',
+    sumber: 'Cakrawala Journal',
+    catatan: 'Harga jual minimum agar tidak rugi.'
+  },
+  {
+    keterangan: 'Rasio R/C',
+    nilai: '2,0',
+    lokasi: 'Studi usaha anggur',
+    sumber: 'Nursafira, A. (2025). MONETER, UIKA Bogor',
+    catatan: 'R/C 2,0 berarti setiap Rp1 biaya menghasilkan Rp2 penerimaan — layak dijalankan.'
+  }
+];
+
+/* ---------- PANDUAN VARIETAS LOKAL ----------
+   Penanganan spesifik untuk varietas yang berpotensi menggantikan
+   atau melengkapi Jupiter & Ninel. */
+const PANDUAN_VARIETAS = [
+  {
+    nama: 'Jestro AG 86',
+    tagline: 'Paling cepat berbuah — pilihan kalau Anda tidak sabar menunggu',
+    iklim: 'Dataran rendah, dirancang untuk iklim Indonesia',
+    kecepatan: 'Panen 95–100 hari setelah pangkas produksi (varietas impor 120–130 hari)',
+    hasil: '9–16 kg per pohon, baik di musim hujan maupun kemarau',
+    kekuatan: [
+      'Genjah — paling cepat berbuah di antara varietas unggul nasional.',
+      'Hasil stabil di musim hujan maupun kemarau, tidak hanya saat kering.',
+      'Tandan panjang dan cita rasa anggur kuat.',
+      'Berasal dari Balitjestro, jadi bibit berlabel jelas dan asal-usulnya bisa dilacak.'
+    ],
+    perhatian: [
+      'Tetap perlu atap plastik saat puncak hujan Desember–Maret.',
+      'Lakukan penjarangan buah bila tandan terlalu padat.',
+      'Bibit resmi lebih aman daripada bibit tidak berlabel.'
+    ],
+    kapanPilih: 'Kalau Anda ingin hasil tercepat, hasil stabil sepanjang tahun, dan bibit yang jelas asalnya.'
+  },
+  {
+    nama: 'Jestro AG 60',
+    tagline: 'Tanpa biji dan renyah — untuk pasar yang suka praktis',
+    iklim: 'Beradaptasi baik di dataran rendah',
+    kecepatan: 'Varietas unggul nasional (genjah)',
+    hasil: '10–25 kg per pohon, gula 16–19 °Brix',
+    kekuatan: [
+      'Tanpa biji (seedless) — tidak perlu repot, disukai konsumen modern.',
+      'Daging buah krispi atau renyah, karakter yang jarang pada anggur tropis.',
+      'Rasa manis segar dan jumlah biji sedikit.',
+      'Dikembangkan PTPN XII sejak 2010, jadi sudah terbukti di lapangan.'
+    ],
+    perhatian: [
+      'Kadar gula 16–19 °Brix sedikit di bawah Jupiter (21 °Brix), tapi teksturnya jadi keunggulan.',
+      'Tetap butuh penjarangan buah.',
+      'Pasar utama adalah konsumen ritel, bukan industri olahan.'
+    ],
+    kapanPilih: 'Kalau target pasar Anda konsumen rumahan yang menyukai anggur tanpa biji dan renyah.'
+  },
+  {
+    nama: 'Prabu Bestari',
+    tagline: 'Buah besar dan manis — pesaing langsung anggur impor',
+    iklim: 'Tumbuh baik sampai 300 mdpl, cocok untuk Pasuruan',
+    kecepatan: 'Perlu waktu lebih lama, tapi hasil per pohon besar',
+    hasil: '10–30 kg per pohon, gula 20 °Brix, tandan 250–660 g',
+    kekuatan: [
+      'Buah besar dengan warna merah gelap — tampilannya meyakinkan di pasar.',
+      'Tingkat pecah buah relatif rendah, lebih tahan saat hujan.',
+      'Gula 20 °Brix, setara atau lebih tinggi dari banyak anggur impor.',
+      'Sudah terbukti di Probolinggo — wilayah dengan iklim hampir sama dengan Pasuruan.'
+    ],
+    perhatian: [
+      'Berbiji 1–3 per buah — bukan untuk pasar yang menuntut tanpa biji.',
+      'Tandan rapat, jadi perlu penjarangan agar buah tidak kecil.',
+      'Petani Probolinggo menunggu hujan berhenti sebelum memangkas produksi.',
+      'Harga di tingkat petani hanya Rp15.000–20.000/kg (grade A), jauh di bawah harga ritel impor.'
+    ],
+    kapanPilih: 'Kalau Anda ingin buah besar dan manis untuk pasar lokal, dan tidak masalah dengan biji.'
+  }
+];

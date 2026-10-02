@@ -444,6 +444,110 @@ function initPanen() {
   });
 }
 
+/* ---------- 5. KALKULATOR KELAYAKAN USAHA ---------- */
+/* Harga di sini adalah harga TINGKAT PETANI (farmgate), bukan harga ritel.
+   Acuan Prabu Bestari grade A: Rp15.000–20.000/kg (studi UB).
+   Memakai harga supermarket (Rp100.000+) akan membuat estimasi jauh terlalu optimistis. */
+/* Biaya operasional disetel agar R/C mendekati 2,0 — angka yang ditemukan
+   pada penelitian usahatani anggur di Probolinggo. Kalau R/C Anda jauh di atas 2,
+   biasanya ada biaya yang belum dihitung (tenaga kerja, penyusutan, kerugian panen). */
+const ASUMSI_USAHA = {
+  jupiter:  { label: 'Jupiter',       hasil: 15, biayaPohon: 250000, harga: 25000, opsPohon: 375000 },
+  ninel:    { label: 'Ninel',         hasil: 12, biayaPohon: 300000, harga: 25000, opsPohon: 300000 },
+  jestro86: { label: 'Jestro AG 86',  hasil: 12, biayaPohon: 220000, harga: 20000, opsPohon: 240000 },
+  jestro60: { label: 'Jestro AG 60',  hasil: 17, biayaPohon: 220000, harga: 22000, opsPohon: 375000 },
+  prabu:    { label: 'Prabu Bestari', hasil: 18, biayaPohon: 220000, harga: 18000, opsPohon: 325000 }
+};
+
+function initUsaha() {
+  const form = document.getElementById('usaha-form');
+  const out = document.getElementById('usaha-out');
+  if (!form || !out) return;
+
+  function hitung() {
+    const n = Math.max(0, parseInt(document.getElementById('usaha-jumlah').value || '0', 10));
+    const hasil = Math.max(0, parseFloat(document.getElementById('usaha-hasil').value || '0'));
+    const harga = Math.max(0, parseFloat(document.getElementById('usaha-harga').value || '0'));
+    const biayaPohon = Math.max(0, parseFloat(document.getElementById('usaha-biaya').value || '0'));
+    const opsPohon = Math.max(0, parseFloat(document.getElementById('usaha-ops').value || '0'));
+    const panenTahun = Math.max(1, parseInt(document.getElementById('usaha-panen').value || '2', 10));
+
+    if (!n) { out.innerHTML = '<p class="calc-hint">Masukkan jumlah tanaman terlebih dahulu.</p>'; return; }
+
+    const rupiah = v => 'Rp' + Math.round(v).toLocaleString('id-ID');
+
+    const modalAwal = biayaPohon * n;
+    const produksiTahun = hasil * n * panenTahun;
+    const pendapatan = produksiTahun * harga;
+    // biaya operasional tahunan: pupuk, fungisida, air, tenaga kerja
+    const biayaOperasional = opsPohon * n;
+    const labaTahun = pendapatan - biayaOperasional;
+    const margin = pendapatan > 0 ? (labaTahun / pendapatan) * 100 : 0;
+    // BEP harga: harga minimum agar penerimaan menutup biaya operasional
+    const bepHarga = produksiTahun > 0 ? biayaOperasional / produksiTahun : 0;
+    // BEP produksi: kg per pohon per panen agar menutup biaya operasional
+    const bepKgPohon = (harga * n * panenTahun) > 0
+      ? biayaOperasional / (harga * n * panenTahun) : 0;
+    const rc = biayaOperasional > 0 ? pendapatan / biayaOperasional : 0;
+    const balikModal = labaTahun > 0 ? modalAwal / labaTahun : Infinity;
+
+    const rcStatus = rc >= 1.5 ? 'ok' : rc >= 1 ? 'warn' : 'crit';
+    const rcLabel = rc >= 1.5 ? 'Layak' : rc >= 1 ? 'Pas-pasan' : 'Belum layak';
+
+    out.innerHTML = `
+      <div class="calc-grid">
+        <div class="calc-cell"><span class="calc-label">Modal awal</span><span class="calc-value">${rupiah(modalAwal)}</span><span class="calc-sub">${n} pohon × ${rupiah(biayaPohon)}</span></div>
+        <div class="calc-cell"><span class="calc-label">Produksi per tahun</span><span class="calc-value">${produksiTahun.toLocaleString('id-ID')} kg</span><span class="calc-sub">${hasil} kg/pohon × ${panenTahun} panen</span></div>
+        <div class="calc-cell"><span class="calc-label">Pendapatan per tahun</span><span class="calc-value">${rupiah(pendapatan)}</span><span class="calc-sub">${rupiah(harga)}/kg</span></div>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-cell"><span class="calc-label">Biaya operasional/tahun</span><span class="calc-value">${rupiah(biayaOperasional)}</span><span class="calc-sub">${rupiah(opsPohon)}/pohon</span></div>
+        <div class="calc-cell ${labaTahun > 0 ? 'ok' : 'crit'}"><span class="calc-label">Laba per tahun</span><span class="calc-value">${rupiah(labaTahun)}</span><span class="calc-sub">margin ${margin.toFixed(0)}%</span></div>
+        <div class="calc-cell"><span class="calc-label">Balik modal</span><span class="calc-value">${isFinite(balikModal) ? balikModal.toFixed(1) + ' tahun' : '—'}</span><span class="calc-sub">${isFinite(balikModal) ? 'pada laba saat ini' : 'laba belum positif'}</span></div>
+      </div>
+      <div class="usaha-bep">
+        <div class="usaha-bep-item">
+          <span class="calc-label">Titik impas harga</span>
+          <b>${rupiah(bepHarga)}/kg</b>
+          <span class="calc-sub">Harga minimum agar tidak rugi, pada tingkat produksi Anda.</span>
+        </div>
+        <div class="usaha-bep-item">
+          <span class="calc-label">Titik impas produksi</span>
+          <b>${bepKgPohon.toFixed(1)} kg/pohon</b>
+          <span class="calc-sub">Hasil minimum per pohon per panen. Studi Probolinggo (skala 1 ha): 6 kg/pohon.</span>
+        </div>
+        <div class="usaha-bep-item usaha-rc usaha-rc-${rcStatus}">
+          <span class="calc-label">Rasio R/C</span>
+          <b>${rc.toFixed(2)}</b>
+          <span class="calc-sub">${rcLabel} — acuan layak: di atas 1,5.</span>
+        </div>
+      </div>
+      <p class="calc-note">Estimasi kasar, bukan proyeksi bisnis. <b>Harga di atas adalah harga tingkat petani,
+      bukan harga supermarket.</b> Acuan penelitian di Probolinggo: R/C sekitar 2,0, BEP harga Rp4.000/kg,
+      dan BEP produksi 6 kg/pohon. Kalau hasil perhitungan Anda jauh di atas acuan itu, kemungkinan
+      ada biaya yang belum dihitung.<br><br>
+      <b>Catatan penting:</b> perhitungan ini mengasumsikan tanaman sudah produktif penuh. Pada kenyataannya
+      tahun pertama biasanya belum menghasilkan, dan tahun kedua baru sebagian. Jadi balik modal yang
+      sebenarnya umumnya lebih lama dari angka di atas. Data acuan lengkap ada di tab
+      Riset &amp; Sumber.</p>`;
+  }
+
+  const jenisSel = document.getElementById('usaha-jenis');
+  jenisSel.addEventListener('change', () => {
+    const a = ASUMSI_USAHA[jenisSel.value];
+    if (!a) return;
+    document.getElementById('usaha-hasil').value = a.hasil;
+    document.getElementById('usaha-harga').value = a.harga;
+    document.getElementById('usaha-biaya').value = a.biayaPohon;
+    document.getElementById('usaha-ops').value = a.opsPohon;
+    hitung();
+  });
+
+  form.addEventListener('input', hitung);
+  form.addEventListener('change', hitung);
+  hitung();
+}
+
 /* ---------- UTIL ---------- */
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

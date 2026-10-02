@@ -79,6 +79,69 @@ function renderVarietasLokal() {
     </div>`).join('');
 }
 
+/* ---------- HARGA PASAR ---------- */
+function renderHarga() {
+  const box = document.getElementById('harga-body');
+  if (!box) return;
+
+  const rupiah = n => 'Rp' + n.toLocaleString('id-ID');
+  const maks = Math.max(...HARGA_PASAR.map(h => h.hargaMax || h.harga));
+
+  box.innerHTML = `
+    <div class="harga-list">
+      ${HARGA_PASAR.map(h => {
+        const lebar = Math.max(4, (h.harga / maks) * 100);
+        const petani = h.segmen.includes('TINGKAT PETANI');
+        return `<div class="harga-row ${petani ? 'harga-petani' : ''}">
+          <div class="harga-info">
+            <span class="harga-segmen">${escapeHtml(h.segmen)}</span>
+            <span class="harga-contoh">${escapeHtml(h.contoh)}</span>
+            <span class="harga-catatan muted small">${escapeHtml(h.catatan)}</span>
+          </div>
+          <div class="harga-bar-wrap">
+            <div class="harga-bar" style="width:${lebar}%"></div>
+          </div>
+          <div class="harga-nilai">
+            <b>${h.hargaMax ? rupiah(h.harga) + '–' + rupiah(h.hargaMax) : rupiah(h.harga)}</b>
+            <span class="muted small">/${h.satuan} · ${escapeHtml(h.tanggal)}</span>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <p class="muted small">Harga pasar bergerak cepat. Angka di atas adalah catatan pada tanggal yang tertera,
+    bukan harga terkini. Selalu cek harga lokal sebelum mengambil keputusan usaha.</p>`;
+}
+
+/* ---------- PANDUAN VARIETAS LOKAL ---------- */
+function renderPanduanVarietas() {
+  const box = document.getElementById('panduan-var-body');
+  if (!box) return;
+
+  box.innerHTML = PANDUAN_VARIETAS.map(v => `
+    <div class="card var-guide">
+      <div class="vg-head">
+        <h3>${escapeHtml(v.nama)}</h3>
+        <p class="vg-tagline">${escapeHtml(v.tagline)}</p>
+      </div>
+      <div class="vg-meta">
+        <div class="vg-meta-item"><span class="vg-label">Iklim</span><span>${escapeHtml(v.iklim)}</span></div>
+        <div class="vg-meta-item"><span class="vg-label">Kecepatan</span><span>${escapeHtml(v.kecepatan)}</span></div>
+        <div class="vg-meta-item"><span class="vg-label">Hasil</span><span>${escapeHtml(v.hasil)}</span></div>
+      </div>
+      <div class="vg-cols">
+        <div>
+          <h4 class="vg-h vg-h-plus">Kekuatan</h4>
+          <ul class="tick-list small">${v.kekuatan.map(k => `<li>${escapeHtml(k)}</li>`).join('')}</ul>
+        </div>
+        <div>
+          <h4 class="vg-h vg-h-minus">Yang perlu diperhatikan</h4>
+          <ul class="tick-list small warn-list">${v.perhatian.map(k => `<li>${escapeHtml(k)}</li>`).join('')}</ul>
+        </div>
+      </div>
+      <p class="vg-pilih"><b>Pilih ini kalau:</b> ${escapeHtml(v.kapanPilih)}</p>
+    </div>`).join('');
+}
+
 /* ---------- RISET & SUMBER ---------- */
 function renderRiset() {
   const box = document.getElementById('riset-body');
@@ -110,6 +173,17 @@ function renderRiset() {
           </tbody>
         </table>
       </div>`;
+  }
+
+  // tabel acuan biaya usaha tani
+  const biayaBox = document.getElementById('biaya-body');
+  if (biayaBox) {
+    biayaBox.innerHTML = BIAYA_REFERENSI.map(b => `<tr>
+      <td>${escapeHtml(b.keterangan)}<br><span class="muted small">${escapeHtml(b.catatan)}</span></td>
+      <td><b>${escapeHtml(b.nilai)}</b></td>
+      <td>${escapeHtml(b.lokasi)}</td>
+      <td class="muted small">${escapeHtml(b.sumber)}</td>
+    </tr>`).join('');
   }
 
   // tabel status klaim
@@ -268,6 +342,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRingkasan();
   renderProfil();
   renderVarietasLokal();
+  renderPanduanVarietas();
+  renderHarga();
   renderKalender();
   renderPanduan();
   renderRiset();
@@ -276,4 +352,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initDiagnosa();
   initKalkulator();
   initPanen();
+  initUsaha();
 });

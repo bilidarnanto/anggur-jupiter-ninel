@@ -580,3 +580,63 @@ body {
   .iklim-chart { height: 160px; gap: 3px; padding: 12px 6px 0; }
   .iklim-label { font-size: 9px; }
 }
+
+/* ============ HARGA PASAR ============ */
+.harga-list { display: flex; flex-direction: column; gap: 12px; }
+.harga-row {
+  display: grid; grid-template-columns: 1.6fr 1fr auto;
+  gap: 16px; align-items: center;
+  padding: 14px 16px; border-radius: 10px;
+  background: var(--panel-2, #faf8fc);
+  border-left: 3px solid var(--ungu-pale);
+}
+.harga-row.harga-petani { border-left-color: #f5b93f; background: #fffbf0; }
+.harga-info { display: flex; flex-direction: column; gap: 2px; }
+.harga-segmen { font-weight: 700; font-size: .92em; color: var(--ink); }
+.harga-contoh { font-size: .85em; color: var(--ink-2); }
+.harga-catatan { line-height: 1.4; }
+.harga-bar-wrap { background: var(--ungu-pale, #ede7f6); border-radius: 20px; height: 8px; overflow: hidden; }
+.harga-bar { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--ungu), #b39ddb); }
+.harga-petani .harga-bar { background: linear-gradient(90deg, #f5b93f, #ffd77a); }
+.harga-nilai { text-align: right; white-space: nowrap; display: flex; flex-direction: column; gap: 2px; }
+
+/* ============ PANDUAN VARIETAS LOKAL ============ */
+.var-guide { margin-bottom: 20px; }
+.vg-head h3 { margin: 0 0 4px; color: var(--ungu); }
+.vg-tagline { margin: 0 0 14px; font-size: .95em; color: var(--ink-2); font-style: italic; }
+.vg-meta {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  padding: 12px 14px; margin-bottom: 18px;
+  background: var(--panel-2, #faf8fc); border-radius: 10px;
+}
+.vg-meta-item { display: flex; flex-direction: column; gap: 3px; font-size: .87em; }
+.vg-label { font-size: .78em; text-transform: uppercase; letter-spacing: .4px; color: var(--ink-3); font-weight: 700; }
+.vg-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.vg-h { font-size: .95em; margin: 0 0 8px; }
+.vg-h-plus { color: #1b7a3d; }
+.vg-h-minus { color: #a76a08; }
+.warn-list li::before { content: '!'; color: #a76a08; }
+.vg-pilih {
+  margin: 16px 0 0; padding: 12px 14px;
+  background: var(--ungu-pale, #ede7f6); border-radius: 8px; font-size: .9em;
+}
+
+/* ============ KELAYAKAN USAHA ============ */
+.calc-cell.ok { background: #e6f6ea; }
+.calc-cell.crit { background: #fdeaea; }
+.usaha-bep { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 18px 0 4px; }
+.usaha-bep-item {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 14px 16px; border-radius: 10px;
+  background: var(--panel-2, #faf8fc); border: 1px solid var(--ungu-pale);
+}
+.usaha-bep-item b { font-size: 1.25em; color: var(--ungu); }
+.usaha-rc-ok { background: #e6f6ea; border-color: #b7e0c4; }
+.usaha-rc-warn { background: #fdf3e0; border-color: #f0d9a8; }
+.usaha-rc-crit { background: #fdeaea; border-color: #f0bcbc; }
+
+@media (max-width: 900px) {
+  .harga-row { grid-template-columns: 1fr; gap: 8px; }
+  .harga-nilai { text-align: left; }
+  .vg-cols, .vg-meta, .usaha-bep { grid-template-columns: 1fr; }
+}
