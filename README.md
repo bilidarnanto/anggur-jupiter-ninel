@@ -1,7 +1,23 @@
 # 🍇 Sistem Budidaya Anggur Jupiter & Ninel
 
-Aplikasi web statis (GitHub Pages) berisi panduan cultivation anggur impor untuk
+Aplikasi web statis berisi panduan cultivation anggur impor untuk
 skala **backyard di Pasuruan, Jawa Timur**.
+
+## 🌐 Akses online
+
+**<https://bilidarnanto.github.io/anggur-jupiter-ninel/>**
+
+Tersedia lewat GitHub Pages, dipublikasi otomatis dari branch `main`.
+Tidak perlu build step, tidak perlu login.
+
+| | |
+|---|---|
+| **Live** | <https://bilidarnanto.github.io/anggur-jupiter-ninel/> |
+| **Repository** | <https://github.com/bilidarnanto/anggur-jupiter-ninel> |
+| **Deploy** | GitHub Pages · branch `main` · folder `/root` |
+
+> ⚠️ Reader dan pencarian full-text membutuhkan `fetch`, jadi situs harus
+> diakses lewat `https://`. Bookmark URL di atas, bukan buka `index.html` dari disk.
 
 ## Isi
 
@@ -61,10 +77,10 @@ diterjemahkan ke konteks kebun.
 
 - Identifikasi Gejala dan Penyakit Tanaman Anggur (NOE, 2023) — dasar metodologi
   mesin diagnosa di tab Diagnosa.
-- Breeding Grapevines for Tropical Environments (VITIS) — Breeding grapevines for
+- Breeding Grapevines for Tropical Environments (VITIS) — pemuliaan anggur untuk
   iklim tropis.
 - Simplified Backyard Grape Spray Guide (Univ. Kentucky) — jadwal semprot backyard.
-- Agribisnis Tanaman Anggur (Univ. Trunojoyo Madura) — konteks Closer Jawa Timur.
+- Agribisnis Tanaman Anggur (Univ. Trunojoyo Madura) — konteks wilayah Jawa Timur.
 
 ### Tautan eksternal
 
@@ -80,6 +96,16 @@ python3 -m http.server 8000
 # buka http://localhost:8000
 ```
 
+## Lisensi dan hak cipta
+
+Konten (kalender, panduan, mesin diagnosa) disusun untuk keperluan pribadi.
+Materi perpustakaan tetap milik pemegangnya:
+
+| Dokumen | Status |
+|---|---|
+| *Manual of American Grape-Growing* (Hedrick, 1908) | Domain publik — Project Gutenberg #29659 |
+| Jurnal NOE, VITIS, Un. Kentucky, Un. Trunojoyo Madura | Open access, tetap milik penerbit |
+
 ## Menguji
 
 ```bash
@@ -92,8 +118,17 @@ mesin diagnosa, kalkulator, reader, dan pencarian full-text.
 
 ## Deploy
 
-Sudah dikonfigurasi untuk GitHub Pages (branch `main`, folder `/root`).
-Aktifkan di **Settings → Pages → Source: Deploy from a branch**.
+Sudah aktif di GitHub Pages: branch `main`, folder `/root`.
+Setiap `git push` ke `main` memicu publish ulang otomatis.
+
+```bash
+git add -A
+git commit -m "..."
+git push
+```
+
+Bila perlu mengatur ulang: **Settings → Pages → Source: Deploy from a branch**
+→ branch `main`, folder `/root`.
 
 ## Disclaimer
 
