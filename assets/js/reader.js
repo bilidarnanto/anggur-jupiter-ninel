@@ -30,12 +30,12 @@ function renderPerpustakaan() {
 
     <h3 class="sub-title">Manual of American Grape-Growing — baca di sini</h3>
     <p class="muted">Karya U. P. Hedrick (1908), domain publik. Buku hortikultura anggur klasik.
-    Bab di bawah ini dipilih yang paling relevan untuk cultivation anggur pekarangan.
-    Teks ini asli berbahasa Inggris dari abad ke-20, jadi istilah teknisnya perlu diterjemahkan
-    ke dalam konteks kebun Anda.</p>
+    Bab di bawah ini dipilih yang paling relevan untuk budidaya anggur pekarangan.
+    Teks aslinya berbahasa Inggris dari awal abad ke-20, jadi istilah teknisnya perlu Anda
+    terjemahkan ke dalam konteks kebun sendiri.</p>
 
     <div class="lib-search">
-      <input type="search" id="lib-q" placeholder="Cari di dalam buku, misalnya: pruning, mildew, rot, graft…" autocomplete="off">
+      <input type="search" id="lib-q" placeholder="Cari di dalam buku, misalnya: pruning, mildew, rot, grafting…" autocomplete="off">
       <div class="lib-search-hint" id="lib-hint"></div>
     </div>
 
@@ -44,11 +44,11 @@ function renderPerpustakaan() {
 
     <h3 class="sub-title">Dokumen PDF</h3>
     <p class="muted">Ditampilkan langsung di dalam halaman ini. Gunakan tombol pengontrol di pojok kiri bawah
-    viewer untuk memperbesar, mencari, dan mengunduh.</p>
+    penampil untuk memperbesar, mencari, dan mengunduh.</p>
     <div class="pdf-list" id="pdf-list"></div>
 
     <h3 class="sub-title">Tautan eksternal</h3>
-    <p class="muted">Semua URL di bawah diverifikasi dapat diakses HTTP 200 saat sistem ini dibuat.</p>
+    <p class="muted">Semua tautan di bawah sudah dicek dan dapat diakses (HTTP 200) saat sistem ini dibuat.</p>
     <div id="tautan-body"></div>`;
 
   // --- daftar bab ---
@@ -311,7 +311,7 @@ async function bukaBab(no, cari) {
         node.parentNode.replaceChild(frag, node);
       });
       posEl.dataset.base = posEl.dataset.base || posEl.textContent;
-      posEl.textContent = n ? `${n} hit` : '0 hit';
+      posEl.textContent = n ? `${n} kecocokan` : 'tidak ditemukan';
     }, 300);
   };
 

@@ -2,7 +2,7 @@
    MODUL INTERAKTIF
    - Checklist tugas per bulan (localStorage)
    - Diagnosa gejala (rule-based, forward chaining)
-   - Kalkulator dosis|round & ukuran wadah
+   - Kalkulator dosis pupuk & ukuran wadah
    - Kalkulator jadwal panen
    ========================================================= */
 
@@ -83,8 +83,8 @@ function initChecklist() {
 
 /* ---------- 2. DIAGNOSA ---------- */
 const GEJALA = [
-  { id: 'g1', teks: 'Daun bercak coklat dengan buluh putih di permukaan bawah' },
-  { id: 'g2', teks: 'Serbuk putih seperti flour di permukaan atas daun' },
+  { id: 'g1', teks: 'Daun bercak coklat dengan lapisan putih di permukaan bawah' },
+  { id: 'g2', teks: 'Serbuk putih seperti tepung di permukaan atas daun' },
   { id: 'g3', teks: 'Buah mengkerut kecoklatan dan berbau busuk' },
   { id: 'g4', teks: 'Bercak coklat kehitaman pada buah dengan titik-titik kecil' },
   { id: 'g5', teks: 'Titik-titik merah kecil di bawah daun, daun menguning' },
@@ -95,7 +95,7 @@ const GEJALA = [
   { id: 'g10', teks: 'Buah kecil-kecil, tidak membesar' },
   { id: 'g11', teks: 'Bunga rontok sebelum menjadi buah' },
   { id: 'g12', teks: 'Buah pecah atau retak setelah masak' },
-  { id: 'g13', teks: 'Tawon atau semut menggerogoh buah' },
+  { id: 'g13', teks: 'Tawon atau semut menggerogoti buah' },
   { id: 'g14', teks: 'Batang membekas, daun layu tanpa perubahan warna' },
   { id: 'g15', teks: 'Buah rontok dari tangkai saat sudah matang' },
   { id: 'g16', teks: 'Pertumbuhan tidak sama sekali sejak ditanam' }
@@ -107,26 +107,26 @@ const ATURAN = [
     id: 'D1', nama: 'Downy Mildew (bulai)',
     syarat: { g1: 5 },
     minimal: 4,
-   Certainty: 0.85,
-    penyebab: 'Jamur Plasmopara viticola. thrives padaRH tinggi dan daun basah, terutama musim hujan November sampai April.',
+    keyakinanDasar: 0.85,
+    penyebab: 'Jamur Plasmopara viticola. Berkembang pada kelembapan tinggi dan daun basah, terutama musim hujan November sampai April.',
     tindakan: [
-      'Buang dan bakar daun yang sévère parah, jangan dikomposkan.',
-      'Semprot mankozeb atau karbendazim sesuai dosis label.',
-      'Pasang atap plastik atau terpal di atas baris untuk mengurangi terkena hujan.',
-      'Perbaiki drainase dan kurangi kelembapangensamu.',
-      'Semprot interval 7 sampai 10 hari selama musim hujan.'
+      'Buang dan bakar daun yang terinfeksi parah, jangan dikomposkan.',
+      'Semprot mankozeb atau karbendazim sesuai dosis pada label.',
+      'Pasang atap plastik atau terpal di atas baris untuk mengurangi curahan hujan langsung.',
+      'Perbaiki drainase dan kurangi kelembapan di sekitar tanaman.',
+      'Semprot dengan interval 7 sampai 10 hari selama musim hujan.'
     ]
   },
   {
     id: 'D2', nama: 'Oidium atau Embun Tepung',
     syarat: { g2: 5 },
     minimal: 4,
-    Certainty: 0.8,
-    penyebab: 'Jamur Uncinula necator. Muncul saat panas kering, terutama pergantian musim dan kemarau.',
+    keyakinanDasar: 0.8,
+    penyebab: 'Jamur Uncinula necator. Muncul saat panas kering, terutama pada pergantian musim dan musim kemarau.',
     tindakan: [
       'Semprot sulfur 2 gram per liter atau karbendazim.',
       'Pangkas daun yang terlalu rapat untuk menambah sirkulasi udara.',
-      'Hindari prednisone input nitrogen berlebihan karena memperbesar risiko.',
+      'Hindari pemberian nitrogen berlebihan karena memperbesar risiko.',
       'Ulangi setiap 10 sampai 14 hari.'
     ]
   },
@@ -134,167 +134,166 @@ const ATURAN = [
     id: 'D3', nama: 'Gray Mold (Botrytis)',
     syarat: { g3: 5, g1: 2 },
     minimal: 4,
-    Certainty: 0.8,
+    keyakinanDasar: 0.8,
     penyebab: 'Jamur Botrytis cinerea. Muncul saat bunga dan buah berada di lingkungan lembap tanpa aliran udara.',
     tindakan: [
-      'Buang buah dan bunga yang busuk segera.',
-      'Kurangi kepadatan tajuk dengan daun bawah removal.',
-      'Kurangi siram langsung ke buah, siram akar saja.',
-      'Semprot preventif dan gunakan atmosfer_appорт yang baik.'
+      'Segera buang buah dan bunga yang busuk.',
+      'Kurangi kepadatan tajuk dengan membuang daun bawah.',
+      'Kurangi penyiraman langsung ke buah, siram ke akar saja.',
+      'Semprot preventif dan jaga sirkulasi udara tetap baik.'
     ]
   },
   {
     id: 'D4', nama: 'Black Rot',
     syarat: { g4: 5 },
     minimal: 4,
-    Certainty: 0.75,
+    keyakinanDasar: 0.75,
     penyebab: 'Jamur Guignardia bidwellii. Menyerang buah yang baru mulai mengeras.',
     tindakan: [
-      'Buang seluruh buah attacked beserta tangkainya.',
+      'Buang seluruh buah yang terserang beserta tangkainya.',
       'Bersihkan sisa buah yang jatuh di bawah tanaman.',
       'Semprot mankozeb atau tembaga sejak fase pembungaan.',
-      'Peringatan: busuk hitam dan gray mold sering muncul bersamaan.'
+      'Perhatikan: black rot dan gray mold sering muncul bersamaan.'
     ]
   },
   {
     id: 'D5', nama: 'Serangan Tungau Merah',
     syarat: { g5: 5, g6: 3 },
     minimal: 4,
-    Certainty: 0.7,
-    penyebab: 'Tungau Tetranychus urticae.=dead-end thrives di udara kering dan panas.',
+    keyakinanDasar: 0.7,
+    penyebab: 'Tungau Tetranychus urticae. Berkembang pesat di udara kering dan panas.',
     tindakan: [
       'Semprot bagian bawah daun dengan air bertekanan tinggi.',
       'Aplikasikan sulfur atau minyak hortikultura.',
-      'Naikkan kelembapanRH dengan kabut air.',
-      'Bersihkan gulma di sekitar tanaman karena menjadi inang.'
+      'Naikkan kelembapan udara dengan kabut air.',
+      'Bersihkan gulma di sekitar tanaman karena bisa menjadi inang.'
     ]
   },
   {
     id: 'D6', nama: 'Kekurangan Kalium',
     syarat: { g6: 4, g7: 3 },
     minimal: 5,
-    Certainty: 0.65,
-    penyebab: 'Kekurangan K sering muncul saat(load) buah tinggi. Gejala khas: tepi daun mengering seperti terbakar.',
+    keyakinanDasar: 0.65,
+    penyebab: 'Kekurangan kalium sering muncul saat beban buah tinggi. Gejala khasnya: tepi daun mengering seperti terbakar.',
     tindakan: [
       'Kocor KALINITRA atau NPK 0-0-60.',
-      'Ulangi 2 minggu sekali sampai daun baru keluar normal.',
+      'Ulangi setiap 2 minggu sampai daun baru keluar normal.',
       'Kurangi beban buah dengan penjarangan.',
-      'Tambahkan pupuke matang di sekeliling akar.'
+      'Tambahkan pupuk kandang matang di sekeliling akar.'
     ]
   },
   {
     id: 'D7', nama: 'Kelebihan Nitrogen',
     syarat: { g8: 5, g11: 2 },
     minimal: 4,
-    Certainty: 0.6,
-    penyebab: 'Terlalu banyak N. Tanaman tumbuh terlaluvigor sehingga sulit berbuah, bunga rontok, dan risiko jamur naik.',
+    keyakinanDasar: 0.6,
+    penyebab: 'Terlalu banyak nitrogen. Tanaman tumbuh terlalu vigor sehingga sulit berbuah, bunga rontok, dan risiko jamur naik.',
     tindakan: [
       'Hentikan urea dan NPK tinggi selama 3 sampai 4 minggu.',
       'Ganti ke pemupukan berkalium dan fosfor.',
-      'Kurangivegetative growth dengan pruning lebih pendek.',
+      'Kurangi pertumbuhan vegetatif dengan pruning lebih pendek.',
       'Pantau ulang setelah 2 minggu.'
     ]
   },
   {
     id: 'D8', nama: 'Kekurangan Nitrogen',
-   satisfies: {},
     syarat: { g9: 5, g6: 2 },
     minimal: 4,
-    Certainty: 0.6,
-    penyebab: 'Ruas pendek, daun kecil, dan warna pucat menandakan kurang N.',
+    keyakinanDasar: 0.6,
+    penyebab: 'Ruas pendek, daun kecil, dan warna pucat menandakan kurang nitrogen.',
     tindakan: [
-      'Beri NPK 16-16-16 atau urea 1_INSTIK spoon per pohon tiap 2 minggu.',
-      'Perbaiki media dengan tambahan pupuke matang.',
-      'Pastikan drainage baik agar akar bisa menyerap.'
+      'Beri NPK 16-16-16 atau urea satu sendok makan per pohon setiap 2 minggu.',
+      'Perbaiki media dengan tambahan pupuk kandang matang.',
+      'Pastikan drainase baik agar akar bisa menyerap hara.'
     ]
   },
   {
     id: 'D9', nama: 'Kelebihan Beban Buah (Overcrop)',
     syarat: { g10: 4, g8: 3 },
     minimal: 4,
-    Certainty: 0.55,
-    penyebab: 'Terlalu banyak tandan dan tunas fruitful. Tanaman tidak mampu mengisi semua buah.',
+    keyakinanDasar: 0.55,
+    penyebab: 'Terlalu banyak tandan dan tunas buah. Tanaman tidak mampu mengisi semua buah.',
     tindakan: [
-      'Kurangi jumlah shoot: sisakan 1 shoot buah per node.',
-      'Buang tandan kedua pada tiap shoot.',
-      'Aplikasikan MKP dan KNO3 via kocor daun.',
-      'Target Jupiter 1,5 sampai 2 kg per shoot, Ninel 1 sampai 1,2 kg per shoot.'
+      'Kurangi jumlah tunas: sisakan satu tunas buah per mata.',
+      'Buang tandan kedua pada tiap tunas.',
+      'Aplikasikan MKP dan KNO3 lewat kocor daun.',
+      'Target Jupiter 1,5 sampai 2 kg per tunas, Ninel 1 sampai 1,2 kg per tunas.'
     ]
   },
   {
-    id: 'D10', nama: 'Gagal fruitset (bunga rontok)',
+    id: 'D10', nama: 'Gagal Pembuahan (bunga rontok)',
     syarat: { g11: 5, g6: 2 },
     minimal: 4,
-    Certainty: 0.6,
-    penyebab: 'Bunga tidak berhasil membuahi. Penyebab: nitrogen berlebih, kelembapan ekstrem, atau musim tidak mendukung.',
+    keyakinanDasar: 0.6,
+    penyebab: 'Bunga tidak berhasil membuahi. Penyebabnya bisa nitrogen berlebih, kelembapan ekstrem, atau musim yang tidak mendukung.',
     tindakan: [
-      'Hentikan semua nitrogen, pindah ke MKP untuk merangsang fruit set.',
+      'Hentikan semua nitrogen, pindah ke MKP untuk merangsang pembentukan buah.',
       'Jaga kelembapan 75 sampai 80 persen saat pembungaan dengan kabut halus.',
-      'Kurangi beban tunascompetition saat bunga mekar.',
-      'Pada Jupiter, pollinasi manual dengan kuas dapat meningkatkan hasil.'
+      'Kurangi persaingan antar tunas saat bunga mekar.',
+      'Pada Jupiter, penyerbukan manual dengan kuas dapat meningkatkan hasil.'
     ]
   },
   {
     id: 'D11', nama: 'Kelembapan Berlebih (pecah buah)',
     syarat: { g12: 5 },
     minimal: 4,
-    Certainty: 0.6,
-    penyebab: 'Fluktuasi air tinggi setelah buah mulai mengeras. Terlalu banyak air lalu kering membuat kulit retak.',
+    keyakinanDasar: 0.6,
+    penyebab: 'Fluktuasi air yang tinggi setelah buah mulai mengeras. Terlalu banyak air lalu kering membuat kulit retak.',
     tindakan: [
-      'Jaga penyiraman konsisten, hindari skenario kering-basah-kering.',
-      'Kurangi volume air Ninel karena buahnya besar dan menyerap banyak.',
+      'Jaga penyiraman konsisten, hindari pola kering–basah–kering.',
+      'Kurangi volume air untuk Ninel karena buahnya besar dan menyerap banyak.',
       'Tambahkan kalium untuk memperkuat dinding buah.',
-      'Kurangi Aisakan hidup di sekeliling buah.'
+      'Kurangi genangan air di sekitar tanaman.'
     ]
   },
   {
-    id: 'D12', nama: 'Serangan Tawan dan Semut',
+    id: 'D12', nama: 'Serangan Tawon dan Semut',
     syarat: { g13: 5 },
     minimal: 4,
-    Certainty: 0.7,
-    penyebab: 'Buah yang matang menarik hama. Ninel yang besar lebih rentan dibanding Jupiter yang hampir kebal.',
+    keyakinanDasar: 0.7,
+    penyebab: 'Buah yang matang menarik hama. Ninel yang besar lebih rentan, sedangkan Jupiter hampir kebal.',
     tindakan: [
       'Pasang perangkap feromon atau perangkap botol.',
-      'Bungkuscluster dengan keranjang atau jaring.',
+      'Bungkus tandan dengan keranjang atau jaring.',
       'Bersihkan sisa buah yang jatuh di tanah.',
-      'Kasih perangkap gula di dekat tanaman, jangan di dekat buah.'
+      'Letakkan perangkap gula di dekat tanaman, jangan dekat buah.'
     ]
   },
   {
     id: 'D13', nama: 'Busuk Akar',
     syarat: { g14: 5, g16: 4 },
     minimal: 5,
-    Certainty: 0.7,
-    penyebab: 'Genangan air di zona akar, media memadats, atau lubang drainase tersumbat.',
+    keyakinanDasar: 0.7,
+    penyebab: 'Genangan air di zona akar, media memadat, atau lubang drainase tersumbat.',
     tindakan: [
-      'Periksa drainase, buat lubang baru atau elevate pot.',
+      'Periksa drainase, buat lubang baru, atau tinggikan pot.',
       'Kurangi frekuensi siram selama 2 minggu.',
-      'Periksa media, ganti bagian yang memadats dengan media baru.',
-      'Sempan substring yang busuk denganSUCCESSENANCE.'
+      'Periksa media, ganti bagian yang memadat dengan media baru.',
+      'Buang bagian akar yang sudah membusuk.'
     ]
   },
   {
     id: 'D14', nama: 'Panen Terlambat',
     syarat: { g15: 5 },
     minimal: 4,
-    Certainty: 0.7,
-    penyebab: 'Jupiter tidak mengeras seperti varietas lain. Bila dibiarkan, buah mulai rontok dari tangkai.',
+    keyakinanDasar: 0.7,
+    penyebab: 'Jupiter tidak mengeras seperti varietas lain. Bila dibiarkan, buah mulai rontok dari tangkainya.',
     tindakan: [
-      'Panen tepat waktu saat Brix 20 lebih dan buah bertekstur lembut.',
+      'Panen tepat waktu saat Brix 20 ke atas dan buah bertekstur lembut.',
       'Catat tanggal panen agar pola hari berikutnya bisa diprediksi.',
-      'Panen bertahap 2 tahap jika sebagian buah sudah matang.'
+      'Panen bertahap dua kali bila sebagian buah sudah matang.'
     ]
   },
   {
-    id: 'D15', nama: 'Bibit Belum Akar / Mati',
+    id: 'D15', nama: 'Bibit Belum Berakar / Mati',
     syarat: { g16: 5, g14: 3 },
     minimal: 5,
-    Certainty: 0.6,
-    penyebab: 'Stek gagal berakar karena media propagasi terlalu kering atau suhu terlalu tinggi.',
+    keyakinanDasar: 0.6,
+    penyebab: 'Stek gagal berakar karena media semai terlalu kering atau suhu terlalu tinggi.',
     tindakan: [
-      'Gunakan media propagasi yang lembap terus-menerus tapi jangan sampai menggenang.',
-      'Naikkan kelembapan dengan wadah propagasi bertutup transparan atauFOLIA.',
-      'Suhu media dijaga sekitar 25 sampai 30 derajat Celsius.',
+      'Gunakan media semai yang lembap terus-menerus, tetapi jangan sampai menggenang.',
+      'Naikkan kelembapan dengan wadah semai bertutup transparan.',
+      'Jaga suhu media sekitar 25 sampai 30 derajat Celsius.',
       'Pindahkan stek ke media utama setelah akar tumbuh minimal 3 cm.'
     ]
   }
@@ -303,15 +302,15 @@ const ATURAN = [
 function jalankanDiagnosa(pilihan) {
   if (!pilihan.length) return [];
   return ATURAN.map(a => {
-    let skor = 0, cocok = 0;
+    let skor = 0;
     for (const [g, w] of Object.entries(a.syarat || {})) {
-      if (pilihan.includes(g)) { skor += w; cocok++; }
+      if (pilihan.includes(g)) skor += w;
     }
     if (skor < a.minimal) return null;
     return {
       ...a,
       skor,
-      keyakinan: Math.min(0.97, (skor / (a.minimal + 2)) * (a.Certainty + 0.2))
+      keyakinan: Math.min(0.97, (skor / (a.minimal + 2)) * (a.keyakinanDasar + 0.2))
     };
   }).filter(Boolean).sort((x, y) => y.skor - x.skor);
 }
@@ -347,10 +346,10 @@ function initDiagnosa() {
             <span>${Math.round(h.keyakinan * 100)}%</span>
           </div>
         </div>
-        <p class="diag-cause"><b>Penyebab:</b> ${h.cause ?? h.penyebab}</p>
+        <p class="diag-cause"><b>Penyebab:</b> ${h.penyebab}</p>
         <p class="diag-act-title">Tindakan yang disarankan:</p>
         <ul class="diag-act">
-          ${(h.tindakan || h.act || []).map(t => `<li>${t}</li>`).join('')}
+          ${h.tindakan.map(t => `<li>${t}</li>`).join('')}
         </ul>
       </div>`).join('');
   });
@@ -358,14 +357,14 @@ function initDiagnosa() {
 
 /* ---------- 3. KALKULATOR DOSIS ---------- */
 const RENCANA = {
-  urea:        { label: 'Urea (46% N)',        perPohon: 20,  per10L: 0,  fase: 'vegetatif' },
-  npk161616:   { label: 'NPK 16-16-16',         perPohon: 20,  per10L: 0,  fase: 'vegetatif' },
-  npk161620:   { label: 'NPK 16-16-20',         perPohon: 20,  per10L: 0,  fase: 'recovery' },
-  npk00060:    { label: 'NPK 0-0-60 (Muriate)', perPohon: 15,  per10L: 0,  fase: 'buah' },
-  mkp:         { label: 'MKP (52% P2O5)',       perPohon: 0,   per10L: 12, fase: 'generatif' },
-  karate:      { label: 'KARATE PLUS BORONI',   perPohon: 0,   per10L: 24, fase: 'generatif' },
-  kalinitra:   { label: 'KALINITRA (KNO3)',     perPohon: 0,   per10L: 20, fase: 'generatif' },
-  pupukOrganik:{ label: 'Pupuke Matang',        perPohon: 1500, per10L: 0,  fase: 'per3bulan' }
+  urea:        { label: 'Urea (46% N)',        perPohon: 20,   per10L: 0,  fase: 'vegetatif' },
+  npk161616:   { label: 'NPK 16-16-16',        perPohon: 20,   per10L: 0,  fase: 'vegetatif' },
+  npk161620:   { label: 'NPK 16-16-20',        perPohon: 20,   per10L: 0,  fase: 'pemulihan' },
+  npk00060:    { label: 'NPK 0-0-60 (Muriate)', perPohon: 15,  per10L: 0,  fase: 'pembesaran buah' },
+  mkp:         { label: 'MKP (52% P2O5)',      perPohon: 0,    per10L: 12, fase: 'generatif' },
+  karate:      { label: 'KARATE PLUS BORONI',  perPohon: 0,    per10L: 24, fase: 'generatif' },
+  kalinitra:   { label: 'KALINITRA (KNO3)',    perPohon: 0,    per10L: 20, fase: 'generatif' },
+  pupukOrganik:{ label: 'Pupuk Kandang Matang', perPohon: 1500, per10L: 0, fase: 'tiap 3 bulan' }
 };
 
 function initKalkulator() {
@@ -396,9 +395,9 @@ function initKalkulator() {
         <div class="calc-cell"><span class="calc-label">Per tangki 10 L</span><span class="calc-value">${formatGram(r.per10L)}</span></div>
         <div class="calc-cell"><span class="calc-label">Jumlah tangki</span><span class="calc-value">${(liter / 10).toLocaleString('id-ID', { maximumFractionDigits: 1 })}</span></div>
       </div>
-      <p class="calc-note">Dosis kocor daun: ${r.label} ${r.per10L} gram per 10 liter air. Aplikasikan 2 kali: MKP lebih dulu, sisanya 3 hari kemudian.</p>`;
+      <p class="calc-note">Dosis kocor daun: ${r.label} ${r.per10L} gram per 10 liter air. Aplikasikan dua kali: MKP lebih dulu, sisanya 3 hari kemudian.</p>`;
     } else {
-      html += `<p class="calc-note">Dosis dasar: ${r.label} ${r.perPohon} gram per pohon per aplikasi. Sesuaikan jika kurang subur atau jika vigor terlalu tinggi.</p>`;
+      html += `<p class="calc-note">Dosis dasar: ${r.label} ${r.perPohon} gram per pohon per aplikasi. Sesuaikan bila tanah kurang subur atau vigor terlalu tinggi.</p>`;
     }
 
     out.innerHTML = html;
@@ -427,8 +426,8 @@ function initPanen() {
 
     const start = new Date(tgl);
     const rows = [
-      { n: 'Jupiter', h: 90, cat: 'Perkiraan panen lebih cepat karena buah kecil' },
-      { n: 'Ninel',  h: 110, cat: 'Lebih lama, tandan besar butuh waktu isi' }
+      { n: 'Jupiter', h: 90, cat: 'Perkiraan panen lebih cepat karena buahnya kecil' },
+      { n: 'Ninel',  h: 110, cat: 'Lebih lama, tandan besar butuh waktu untuk mengisi' }
     ];
 
     out.innerHTML = '<div class="calc-grid">' + rows.map(r => {
@@ -440,7 +439,7 @@ function initPanen() {
         <span class="calc-sub">${r.cat}</span>
       </div>`;
     }).join('') + `</div>
-    <p class="calc-note">Perkiraan ini berdasarkan siklus Configuration 90 sampai 110 hari di iklim Pasuruan.
+    <p class="calc-note">Perkiraan ini berdasarkan siklus 90 sampai 110 hari di iklim Pasuruan.
     Selalu cek Brix dan rasa sebelum memanen, bukan hanya tanggal.</p>`;
   });
 }

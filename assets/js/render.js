@@ -40,17 +40,17 @@ function renderRingkasan() {
   mc.innerHTML = `
     <div class="card">
       <h4>Musim Hujan (Nov–Apr)</h4>
-      <p class="muted">RH tinggi, sering hujan. Downy mildew dan gray mold aktif. Fokus: sanitasi,
-      buang daun bawah, drainase, dan kontrol kelembapan. Produksi tetap berjalan tetapi risikonya tinggi.</p>
+      <p class="muted">Kelembapan tinggi dan hujan sering. Downy mildew dan gray mold aktif. Fokus: sanitasi,
+      buang daun bawah, drainase, dan kontrol kelembapan. Produksi tetap berjalan, tetapi risikonya tinggi.</p>
     </div>
     <div class="card">
       <h4>Musim Kemarau (Mei–Okt)</h4>
       <p class="muted">Kering dan panas. Oidium jadi ancaman utama, bisa dikendalikan dengan sulfur.
-      Ini window terbaik untuk fruitset dan pem maturesan gula. Pastikan ketersediaan air irigasi.</p>
+      Ini jendela terbaik untuk pembentukan buah dan pematangan gula. Pastikan ketersediaan air irigasi.</p>
     </div>
     <div class="card">
-      <h4>Jendela Panen (Jun & Nov–Des)</h4>
-      <p class="muted">Dua siklus setahun dimungkinkan bila Anda memangkas dua kali:
+      <h4>Jendela Panen (Jun &amp; Nov–Des)</h4>
+      <p class="muted">Dua siklus setahun bisa dicapai bila Anda memangkas dua kali:
       Februari untuk panen Juni, dan Agustus untuk panen November–Desember.</p>
     </div>`;
 }
@@ -96,10 +96,8 @@ function renderKalender() {
   const nav = document.getElementById('month-nav');
   const det = document.getElementById('month-detail');
   const now = new Date().getMonth() + 1;
-  let aktif = now;
 
   function tampil(b) {
-    aktif = b.m;
     nav.querySelectorAll('.mnav').forEach(el =>
       el.classList.toggle('active', +el.dataset.m === b.m));
 
