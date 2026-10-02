@@ -1,183 +1,277 @@
 /* =========================================================
    DATA — Sistem Budidaya Anggur Jupiter & Ninel
-   Wilayah acuan: Pasuruan / Bangil, Jawa Timur (tropis, 2 musim)
+   Wilayah acuan: Bangil / Kabupaten Pasuruan, Jawa Timur
+   Iklim: tropis, 2 musim. Data iklim dari Climate-Data.org (Bangil)
+   + BMKG, sesuai kutipan di halaman Kabupaten Pasuruan.
    ========================================================= */
+
+/* ---------- IKLIM PASURUAN (BANGIL) ----------
+   Curah hujan rata-rata (mm), hari hujan, dan kelembapan per bulan.
+   Sumber: Climate-Data.org (Bangil) & BMKG (normal 1991–2020). */
+const IKLIM = [
+  { m: 1,  nama: 'Januari',   hujan: 362, hari: 16, rh: 82 },
+  { m: 2,  nama: 'Februari',  hujan: 344, hari: 15, rh: 83 },
+  { m: 3,  nama: 'Maret',     hujan: 306, hari: 14, rh: 80 },
+  { m: 4,  nama: 'April',     hujan: 212, hari: 10, rh: 77 },
+  { m: 5,  nama: 'Mei',       hujan: 100, hari: 5,  rh: 75 },
+  { m: 6,  nama: 'Juni',      hujan: 63,  hari: 3,  rh: 71 },
+  { m: 7,  nama: 'Juli',      hujan: 22,  hari: 1,  rh: 69 },
+  { m: 8,  nama: 'Agustus',   hujan: 8,   hari: 0,  rh: 66 },
+  { m: 9,  nama: 'September', hujan: 11,  hari: 1,  rh: 67 },
+  { m: 10, nama: 'Oktober',   hujan: 40,  hari: 2,  rh: 70 },
+  { m: 11, nama: 'November',  hujan: 140, hari: 6,  rh: 74 },
+  { m: 12, nama: 'Desember',  hujan: 283, hari: 13, rh: 79 }
+];
+
+/* Musim riil Pasuruan berdasarkan data di atas:
+   - Hujan penuh  : November–April (Nov mulai naik, Des–Mar puncak)
+   - Transisi     : April–Mei (hujan turun) dan Oktober–November (hujan naik)
+   - Kemarau      : Juni–September (paling kering Agustus, hanya 8 mm) */
+const MUSIM_PASURUAN = {
+  hujan: 'November–April',
+  kemarau: 'Juni–September',
+  keringPuncak: 'Juli–Agustus',
+  transisi: ['April–Mei', 'Oktober–November']
+};
 
 /* ---------- PROFIL VARIETAS ---------- */
 const PROFIL = {
   jupiter: {
     id: 'jupiter',
     nama: 'Jupiter',
-    namaLain: 'Kishmish Jupiter · Jupiter Seedless',
-    asal: 'Amerika Serikat — hasil persilangan Arkansas 1258 × Arkansas 1672 di Arkansas',
-    tipe: 'Anggur buah meja, tanpa biji (seedless), kelas Kishmish',
-    warna: 'Merah keunguan sampai ungu tua',
-    rasa: 'Sangat manis, aroma muskat tegas, daging buah berair',
-    pematang: 'Awal — sekitar 125 hari sejak berbunga. Di iklim tropis lebih cepat, sekitar 90–110 hari',
-    ukuranBuah: '3–6 gram per butir, bentuk oval',
-    ukuranTandan: '300–500 gram, bentuk silinder-kerucut',
-    gula: '22–24 % Brix',
-    asam: '6–7 gram per liter',
-    ketahanan: 'Sangat tinggi terhadap penyakit jamur, hampir tidak diserang tawon, buah tidak mudah pecah',
-    produksi: '20–30 kg per pohon, relatif stabil setiap tahun',
-    vigor: 'Kuat, mudah diperbanyak, cocok disambung dengan berbagai rootstock',
-    potong: 'Pruning buah 10–12 mata tunas (cane pruning) bila ingin buah besar',
-    karakter: 'Toleran terhadap panas, sangat cocok untuk musim kemarau Pasuruan',
+    namaLain: 'Kishmish Jupiter · Jupiter Seedless · Arkansas 1985',
+    asal: 'Amerika Serikat — dirilis University of Arkansas 1998. Persilangan Arkansas 1258 × Arkansas 1672 (sumber: paten tanaman USPP13309, John R. Clark & James N. Moore).',
+    tipe: 'Anggur buah meja tanpa biji (interspecific seedless), aroma muskat',
+    warna: 'Merah kebiruan sampai biru saat matang penuh',
+    rasa: 'Muskat tegas dan khas — ini keunggulan utamanya. Biji tidak ada, kulit tidak terlalu keras',
+    pematang: 'Awal. Di sumber Arkansas dilaporkan berbuah cepat; di iklim tropis perlu dihitung ulang dari pengamatan lokal',
+    ukuranBuah: 'Besar dan oval — lebih besar dari rata-rata anggur tanpa biji',
+    ukuranTandan: 'Tandan besar (sumber resmi menyebut "large clusters")',
+    gula: 'Sekitar 21 °Brix di Arkansas. Di Pasuruan bisa lebih tinggi karena penyinaran penuh, tapi harus diukur, bukan diasumsikan',
+    asam: 'Tidak dilaporkan spesifik di sumber resmi',
+    ketahanan: 'Ketahanan sedang sampai kuat terhadap penyakit jamur (bukan "sangat tinggi"). Sumber paten juga menyebut tahan pecah buah',
+    produksi: 'Produktif. Uji resmi Arkansas mencapai 25–29 ton/acre (setara ±56–65 ton/ha) — angka ini dari kebun penelitian, bukan pekarangan',
+    vigor: 'Kuat dan bisa dilatih tumbuh tegak (upright)',
+    potong: 'Sumber resmi tidak menetapkan jumlah mata spesifik untuk Jupiter. Rekomendasi "10–12 mata" di panduan pekarangan adalah praktik umum, bukan angka resmi varietas',
+    karakter: 'Tahan pecah buah, produktif, dan tahan penyakit jamur sedang–kuat. Di Washington State dilaporkan kurang tahan kekeringan musim panas',
     catatan: [
-      'Tidak perlu penjarangan beban buah — tanaman mengatur sendiri jumlah buahnya.',
-      'Kelemahan: bila dibiarkan terlalu lama di pohon, buah mulai rontok dari tangkainya.',
-      'Butuh penyerbukan yang baik. Hasil paling stabil di tanah subur dan tanpa pupuk nitrogen berlebihan.',
-      'Karena buahnya kecil, bebannya ringan — cocok untuk pot kecil dan untuk pemula.',
-      'Rasanya paling konsisten di antara kedua varietas ini, dan paling aman untuk pemula.'
+      'Keunggulan yang paling menonjol menurut pemulia aslinya adalah rasanya — varietas muskat pertama yang dirilis University of Arkansas.',
+      'Patennya sudah kedaluwarsa sejak 11 Januari 2019, jadi bebas diperbanyak tanpa royalti.',
+      'Tidak perlu penjarangan beban buah; tanaman cenderung mengatur sendiri.',
+      'Kelemahan: bila dibiarkan terlalu lama di pohon, buah bisa rontok dari tangkainya (cluster shatter).',
+      'Butuh penyerbukan yang baik. Hasil paling stabil di tanah subur tanpa nitrogen berlebihan.'
     ]
   },
   ninel: {
     id: 'ninel',
     nama: 'Ninel',
-    namaLain: 'Nizina-2 (nama resminya) · anggur impor dari Ukraina',
-    asal: 'Ukraina, seleksi V. N. Kraynov',
-    tipe: 'Anggur buah meja, berbiji, warna merah keunguan',
+    namaLain: 'Nizina-2 (nama resmi) · Нинель · anggur meja Ukraina',
+    asal: 'Ukraina — hasil pemuliaan V. N. Kraynov. Ninel adalah HIBRIDA KOMPLEKS (Talisman × Kishmish Archer), bukan hasil seleksi sederhana.',
+    tipe: 'Anggur buah meja berbiji, bentuk tandan besar',
     warna: 'Merah keunguan (crimson)',
     rasa: 'Manis, lembut, aroma muskat ringan',
-    pematang: 'Awal sampai menengah — 125–135 hari sejak berbunga',
-    ukuranBuah: '12–15 gram per butir, sekitar 30 × 23 mm, agak oval',
-    ukuranTandan: '600–1.500 gram. Dengan penanganan yang tepat bisa mencapai 2.000–3.000 gram',
-    gula: '17–18 % Brix',
-    asam: '8–9 gram per liter',
-    ketahanan: 'Ketahanan penyakit sedang (skala 3–3,5 dari 5) — perlu pencegahan lebih aktif',
-    produksi: '10–15 kg per pohon, relatif stabil setiap tahun',
-    vigor: 'Sangat kuat — harus dikendalikan agar tajuk tidak terlalu rimbun',
+    pematang: 'Menengah–awal. Sumber breeder menyebut 125–135 hari sejak berbunga',
+    ukuranBuah: 'Besar. Sumber pembibitan menyebut 12–15 gram per butir — angka dari penjual bibit, belum diverifikasi lembaga resmi',
+    ukuranTandan: 'Tandan besar dan berat. Angka "600–1.500 g" berasal dari deskripsi pembibitan, bukan uji resmi',
+    gula: 'Sekitar 17–18 °Brix menurut sumber pembibitan',
+    asam: 'Tidak dilaporkan di sumber resmi',
+    ketahanan: 'Sumber pembibitan menyebut ketahanan penyakit sedang. Perlu pencegahan lebih aktif daripada Jupiter',
+    produksi: 'Sumber pembibitan menyebut sekitar 10–15 kg/pohon. Angka ini BELUM terverifikasi — tidak ditemukan di publikasi ilmiah',
+    vigor: 'Kuat — harus dikendalikan agar tajuk tidak terlalu rimbun',
     potong: 'Perlu penjarangan buah agar tidak kelebihan beban dan buah tetap besar',
     karakter: 'Butuh air dan nutrisi lebih banyak daripada Jupiter',
     catatan: [
-      'Sering diserang tawon dan semut karena buahnya besar — wajib dipasang perangkap atau pelindung.',
-      'Penjarangan bunga wajib dilakukan agar buah tidak kecil dan tandan tidak terlalu berat.',
-      'Sensitif terhadap kelebihan air, jadi media tanam harus punya drainase yang baik.',
-      'Tandan bisa mencapai 3 kg, sehingga butuh trellis yang kuat.',
-      'Di pasaran, bibitnya sering dijual dengan nama "Nizina-2".'
+      'Nama "Ninel" adalah nama dagang; nama resmi varietasnya Nizina-2. Pastikan bibit yang dibeli benar-benar Nizina-2.',
+      'Karena buahnya besar dan tandan berat, butuh trellis yang kuat dan penjarangan rutin.',
+      'Sering diserang tawon dan semut — wajib perangkap atau pelindung buah.',
+      'Sensitif terhadap kelebihan air; media harus punya drainase baik.',
+      '⚠️ Angka-angka agronomis Ninel di panduan ini berasal dari deskripsi pembibitan komersial, bukan dari lembaga penelitian. Perlakukan sebagai perkiraan, bukan patokan pasti.'
     ]
   }
 };
 
-/* ---------- KALENDER 12 BULAN ---------- */
+/* ---------- VARIETAS LOKAL & UNGGUL NASIONAL ----------
+   Varietas yang sudah dirilis Kementerian Pertanian / Balitjestro dan
+   beradaptasi dengan iklim Indonesia. Cocok sebagai pembanding Jupiter & Ninel.
+   Sumber: Balitjestro (Balitbangtan), SK pelepasan varietas, dan
+   Dinas Komunikasi dan Informatika Jawa Timur. */
+const VARIETAS_LOKAL = [
+  {
+    nama: 'Jestro AG 86',
+    asal: 'Balai Penelitian Tanaman Jeruk dan Buah Subtropika (Balitjestro), Kementerian Pertanian',
+    tipe: 'Anggur tanpa biji, tandan panjang',
+    keunggulan: 'Produktivitas tinggi (9–16 kg/pohon), tandan panjang, cita rasa anggur kuat. Genjah — bisa panen 95–100 hari setelah pangkas produksi, lebih cepat dari varietas impor yang 120–130 hari.',
+    catatan: 'Dirancang khusus untuk iklim Indonesia. Paling cepat berbuah di antara varietas unggul nasional.',
+    status: 'Varietas unggul nasional (Balitjestro)',
+    sumber: 'https://bulelengkab.go.id/informasi/download/52-hasil-penelitian-anggur-varietas-jestro-ag-86-balitbang-pertanian-kementan.pdf'
+  },
+  {
+    nama: 'Jestro AG 60',
+    asal: 'Balitjestro, Kementerian Pertanian',
+    tipe: 'Anggur tanpa biji (seedless)',
+    keunggulan: 'Manis, krispi, tanpa biji. Gula 16–19 °Brix, produktivitas 10–25 kg/pohon. Beradaptasi baik di dataran rendah.',
+    catatan: 'Dikenal karena daging buah renyah — karakter yang jarang pada anggur tropis.',
+    status: 'Varietas unggul nasional (Balitjestro)',
+    sumber: 'https://jambi.antaranews.com/berita/322745/jestro-ag60-anggur-tanpa-biji-dari-balitbang-pertanian'
+  },
+  {
+    nama: 'Prabu Bestari',
+    asal: 'Probolinggo — dilepas sebagai varietas unggul (sinonim "Red Pince")',
+    tipe: 'Anggur buah meja berbiji',
+    keunggulan: 'Buah besar, warna merah gelap, gula 20 °Brix. Produksi 10–30 kg/pohon, tandan 250–660 g, tingkat pecah buah rendah. Tumbuh baik sampai 300 mdpl.',
+    catatan: 'Pesaing langsung anggur impor menurut Dinas Kominfo Jatim. Cocok ditanam di dataran rendah seperti Pasuruan.',
+    status: 'Varietas unggul nasional',
+    sumber: 'https://kominfo.jatimprov.go.id/berita/prabu-bestari-anggur-probolinggo-yang-jadi-pesaing-anggur-impor'
+  },
+  {
+    nama: 'Probolinggo Biru 81',
+    asal: 'Probolinggo (Vitis vinifera)',
+    tipe: 'Anggur buah meja',
+    keunggulan: 'Manis, warna merah kehitaman berlapis bedak. Bobot buah 2,57–9,90 g, umur panen ±120 hari setelah pangkas, produktivitas 10–30 kg/panen/pohon.',
+    catatan: 'Salah satu varietas lokal tertua yang masih ditanam dan direkomendasikan Departemen Pertanian.',
+    status: 'Varietas lokal, direkomendasikan pemerintah',
+    sumber: 'https://indonesiabaik.id/infografis/jenis-anggur-yang-ditanam-di-indonesia'
+  },
+  {
+    nama: 'Probolinggo Super (Cardinal)',
+    asal: 'Probolinggo',
+    tipe: 'Anggur buah meja',
+    keunggulan: 'Varietas lama yang terbukti beradaptasi di dataran rendah Jawa Timur. Dibahas dalam kajian karakteristik varietas di Kota Probolinggo.',
+    catatan: 'Kajian akademik tersedia (El-Hayah: Jurnal Biologi, UIN Malang).',
+    status: 'Varietas lokal',
+    sumber: 'https://ejournal.uin-malang.ac.id/index.php/bio/article/view/1787'
+  },
+  {
+    nama: 'Anggur Bali (Alphonso Lavalle)',
+    asal: 'Buleleng, Bali — dikembangkan sejak 1934',
+    tipe: 'Anggur buah meja dan olahan',
+    keunggulan: 'Adaptasi sangat baik di iklim lokal dan produktif secara ekonomis. Buleleng menghasilkan 11.938 ton (2022) — tertinggi nasional.',
+    catatan: 'Terdaftar resmi lewat SK Menteri Pertanian No. 857/Kpts/TP.240/12/1985.',
+    status: 'Varietas lokal terdaftar',
+    sumber: 'https://kanaldesa.com/artikel/semanis-aroma-anggur-dari-pulau-dewata'
+  }
+];
+
+/* ---------- KALENDER 12 BULAN ----------
+   Musim mengikuti data curah hujan Pasuruan (Bangil) yang sebenarnya:
+   hujan penuh November–April, kemarau Juni–September.
+   Pola siklus: pruning pasca hujan (Mei) → panen siklus 1 (Agustus–September),
+   lalu pruning (September–Oktober) → panen siklus 2 (Desember–Januari). */
 const BULAN = [
   {
-    m: 1, nama: 'Januari', musim: 'Musim hujan',
-    ch: 'Puncak hujan dan risiko penyakit tertinggi. Fokus pada pencegahan dan drainase.',
+    m: 1, nama: 'Januari', musim: 'Puncak musim hujan',
+    ch: 'Bulan terbasah (362 mm, 16 hari hujan). Risiko penyakit paling tinggi. Fokus penuh pada pencegahan.',
     tugas: [
       { nama: 'Cegah busuk akar', detail: 'Kurangi volume siram 30–50 persen. Pastikan lubang drainase benar-benar lancar.', tag: 'kritis' },
-      { nama: 'Bersihkan tajuk', detail: 'Pangkas daun dan ranting yang menyentuh tanah, beri ruang agar udara bisa mengalir.', tag: 'pangkas' },
+      { nama: 'Bersihkan tajuk', detail: 'Pangkas daun dan ranting yang menyentuh tanah agar udara bisa mengalir.', tag: 'pangkas' },
       { nama: 'Pantau downy mildew', detail: 'Bintik kekuningan di atas daun dan lapisan putih di bawahnya adalah tanda downy mildew. Semprot mankozeb.', tag: 'sakit' },
-      { nama: 'Siapkan media tanam', detail: 'Fermentasi pupuk kandang dan sekam dengan matang sebelum dipakai. Resepnya ada di tab Panduan.', tag: 'tanam' },
-      { nama: 'Mulai stek', detail: 'Musim yang baik untuk stek: 15–20 cm, 2–3 mata tunas, media semai yang lembap.', tag: 'perbanyakan' }
+      { nama: 'Siapkan media tanam', detail: 'Fermentasi pupuk kandang dan sekam dengan matang sebelum dipakai. Resepnya ada di tab Panduan.', tag: 'tanam' }
     ]
   },
   {
-    m: 2, nama: 'Februari', musim: 'Musim hujan berakhir',
-    ch: 'Persiapan siklus panen pertama. Hujan mulai berkurang, tanaman beralih ke fase generatif.',
+    m: 2, nama: 'Februari', musim: 'Puncak musim hujan',
+    ch: 'Masih sangat basah (344 mm). Jangan memangkas produksi sekarang — batang muda rentan busuk kena hujan.',
     tugas: [
-      { nama: 'Pruning pembuahan siklus 1', detail: 'Pangkas 5–7 mata tunas (rod pruning). Target: bunga mekar akhir Maret, panen akhir Juni.', tag: 'kritis' },
-      { nama: 'Pupuk dasar saat pangkas', detail: 'Beri 1 sengkul pupuk kandang matang plus 1 sengkul urea per pohon agar tunas baru cepat tumbuh.', tag: 'pupuk' },
-      { nama: 'Kocor MKP dan KNO3', detail: '10–14 hari setelah pangkas: MKP 12 gram, KARATE PLUS BORONI 24 gram, KALINITRA 20 gram per 10 liter air, dipecah dua kali.', tag: 'pupuk' },
-      { nama: 'Pasang atap atau terpal', detail: 'Atap plastik menahan guyuran hujan langsung ke buah dan menurunkan risiko gray mold secara drastis.', tag: 'sakit' }
+      { nama: 'Tahan dulu pruning produksi', detail: 'Petani Probolinggo menunggu hujan berhenti sebelum pangkas. Batang muda sangat rentan air hujan.', tag: 'kritis' },
+      { nama: 'Jaga sanitasi dan drainase', detail: 'Buang daun sakit dan pastikan tidak ada genangan. Ini bulan paling menentukan kegagalan atau keberhasilan.', tag: 'kritis' },
+      { nama: 'Semprot preventif rutin', detail: 'Interval 7–10 hari selama hujan masih deras. Jangan menunggu gejala muncul.', tag: 'sakit' },
+      { nama: 'Siapkan stek', detail: 'Siapkan media semai lembap untuk stek 15–20 cm dengan 2–3 mata tunas.', tag: 'perbanyakan' }
     ]
   },
   {
-    m: 3, nama: 'Maret', musim: 'Awal musim kemarau',
-    ch: 'Peralihan dari fase vegetatif ke generatif. Tanaman butuh air lebih sering.',
+    m: 3, nama: 'Maret', musim: 'Musim hujan',
+    ch: 'Hujan mulai berkurang (306 mm) tapi masih tinggi. Belum aman untuk memangkas produksi.',
     tugas: [
-      { nama: 'Naikkan frekuensi siram', detail: 'Siram dua kali sehari saat panas. Ruas internode di bawah 5 cm menandakan kurang air.', tag: 'siram' },
-      { nama: 'Pantau pembungaan', detail: 'Tunas bunga mulai terlihat di minggu ke-3 sampai ke-4. Hentikan urea, pindah ke MKP agar bunga terbentuk rapi.', tag: 'kritis' },
-      { nama: 'Semprot preventif awal', detail: 'Fungisida untuk melindungi bunga dan buah muda dari thrips dan botrytis.', tag: 'sakit' },
-      { nama: 'Buang tunas liar', detail: 'Buang tunas dari pangkal dan bagian yang tidak berbuah. Sisakan 2–3 tunas terkuat.', tag: 'pangkas' }
+      { nama: 'Selesaikan perawatan vegetatif', detail: 'Manfaatkan masa ini untuk membesarkan batang: pupuk kandang matang + urea per pohon.', tag: 'pupuk' },
+      { nama: 'Pantau oidium dini', detail: 'Kelembapan masih tinggi. Awasi serbuk putih di daun dan segera tangani.', tag: 'sakit' },
+      { nama: 'Perbaiki trellis', detail: 'Perbaiki kawat dan ikatan sebelum musim produktif dimulai. Jangan menunggu saat sibuk.', tag: 'pangkas' }
     ]
   },
   {
-    m: 4, nama: 'April', musim: 'Musim kemarau',
-    ch: 'Fase pembentukan buah. Ini saat menentukan seberapa besar buah Anda nanti.',
+    m: 4, nama: 'April', musim: 'Transisi hujan → kemarau',
+    ch: 'Hujan turun tajam (212 mm). Mulai bersiap untuk siklus produksi pertama.',
     tugas: [
-      { nama: 'Penjarangan buah muda', detail: 'Wajib untuk Ninel. Sisakan 1 tandan per tunas, buang tandan kedua dan buah yang tidak sempurna.', tag: 'kritis' },
-      { nama: 'Kontrol panjang tunas', detail: 'Potong pucuk 3–5 mata begitu tunas lebih dari 1,2 meter agar energi tersalur ke buah.', tag: 'pangkas' },
-      { nama: 'Pemupukan pembesaran buah', detail: 'Mulai NPK 16-16-16 satu sendok makan per pohon, setiap dua minggu.', tag: 'pupuk' },
-      { nama: 'Pasang perangkap hama', detail: 'Ninel yang besar sangat menarik tawon. Aktifkan perangkap botol dan perangkap berferomon.', tag: 'hama' }
+      { nama: 'Rencanakan pruning', detail: 'Tentukan tanggal pangkas untuk panen siklus 1. Perhitungkan 90–120 hari sampai panen.', tag: 'kritis' },
+      { nama: 'Kocor MKP dan KNO3', detail: 'Persiapan fase generatif: MKP 12 gram, KARATE PLUS BORONI 24 gram, KALINITRA 20 gram per 10 liter air, dipecah dua kali.', tag: 'pupuk' },
+      { nama: 'Kurangi frekuensi semprot', detail: 'Seiring hujan berkurang, penyakit jamur basah mulai mereda. Sesuaikan interval semprot.', tag: 'sakit' }
     ]
   },
   {
-    m: 5, nama: 'Mei', musim: 'Musim kemarau',
-    ch: 'Buah membesar. Kadar gula mulai naik dan rasa mulai terbentuk.',
+    m: 5, nama: 'Mei', musim: 'Awal kemarau',
+    ch: 'Bulan kunci. Hujan tinggal 100 mm — inilah saat petani Probolinggo memangkas produksi.',
     tugas: [
-      { nama: 'Semprot oidium', detail: 'Panas kering adalah puncak powdery mildew. Pakai sulfur 2 gram per liter atau karbendazim.', tag: 'sakit' },
-      { nama: 'Jaga kondisi tunas', detail: 'Tunas masih aktif tumbuh. Jangan dibiarkan memanjang tanpa kontrol berkala.', tag: 'pangkas' },
-      { nama: 'Irigasi konsisten', detail: 'Sekitar 4–8 liter per pot per hari, atau 20–40 liter per pohon. Jangan sampai media kering total.', tag: 'siram' },
-      { nama: 'Cek Brix mingguan', detail: 'Pakai refractometer. Target Jupiter 20+ Brix, Ninel 16–17 Brix saat panen.', tag: 'panen' }
+      { nama: 'PRUNING PRODUKSI SIKLUS 1', detail: 'Ini pangkas utama Anda. Pilih 5–7 mata tunas (rod pruning). Target panen Agustus–September.', tag: 'kritis' },
+      { nama: 'Pupuk dasar saat pangkas', detail: 'Beri pupuk kandang matang plus urea per pohon agar tunas baru cepat tumbuh.', tag: 'pupuk' },
+      { nama: 'Naikkan frekuensi siram', detail: 'Kemarau mulai. Siram 1–2 kali sehari saat panas, jangan biarkan media kering total.', tag: 'siram' },
+      { nama: 'Pasang atap plastik bila perlu', detail: 'Untuk sisa hujan tak terduga, atap plastik melindungi bunga dan buah muda.', tag: 'sakit' }
     ]
   },
   {
     m: 6, nama: 'Juni', musim: 'Musim kemarau',
-    ch: 'Panen siklus 1. Panen dilakukan bertahap, bukan sekaligus di tanggal yang sama.',
+    ch: 'Kemarau mulai mantap (63 mm). Tunas dan bunga mulai berkembang.',
     tugas: [
-      { nama: 'Panen siklus 1', detail: 'Jupiter: buah ungu penuh, lembut, rasa manis. Ninel: merah pekat, tidak keras, aroma muskat ringan.', tag: 'panen' },
-      { nama: 'Potong seluruh tandan', detail: 'Gunting seluruh tandan dan sisakan 5–10 ruas tangkai agar buah tidak jatuh.', tag: 'panen' },
-      { nama: 'Pruning pasca panen', detail: 'Setelah panen, pangkas 3–4 mata. Ini memicu tunas pengganti yang produktif.', tag: 'kritis' },
-      { nama: 'Hitung hasil per pohon', detail: 'Catat jumlah tandan dikali beratnya. Ini jadi acuan untuk pengaturan musim depan.', tag: 'panen' }
+      { nama: 'Pantau pembungaan', detail: 'Tunas bunga muncul beberapa minggu setelah pangkas. Hentikan urea, pindah ke MKP agar bunga terbentuk rapi.', tag: 'kritis' },
+      { nama: 'Buang tunas liar', detail: 'Buang tunas dari pangkal dan bagian yang tidak berbuah. Sisakan 2–3 tunas terkuat.', tag: 'pangkas' },
+      { nama: 'Semprot preventif awal', detail: 'Lindungi bunga dan buah muda dari thrips dan botrytis.', tag: 'sakit' }
     ]
   },
   {
-    m: 7, nama: 'Juli', musim: 'Musim kemarau',
-    ch: 'Masa pemulihan. Biarkan daun kembali rimbun untuk mengisi cadangan energi tanaman.',
+    m: 7, nama: 'Juli', musim: 'Kemarau kering',
+    ch: 'Sangat kering (22 mm). Waspadai oidium karena udara kering dan panas.',
     tugas: [
-      { nama: 'Pupuk nitrogen untuk pemulihan', detail: 'NPK 16-16-20 satu sendok makan per pohon setiap dua minggu. Tambah urea bila tanah kurang subur.', tag: 'pupuk' },
-      { nama: 'Buang tunas non-fruktif', detail: 'Setelah pruning pasca panen, sisakan hanya tunas yang berasal dari mata buah.', tag: 'pangkas' },
-      { nama: 'Waspadai defoliasi dini', detail: 'Tepi daun menguning lalu rontok menandakan kekurangan kalium. Tambahkan KALINITRA.', tag: 'pupuk' },
-      { nama: 'Siapkan stek Juli–Agustus', detail: 'Musim terbaik untuk stek. Simpan 4–5 stek per varietas sebagai cadangan.', tag: 'perbanyakan' }
+      { nama: 'Semprot oidium', detail: 'Panas kering adalah puncak powdery mildew. Pakai sulfur 2 gram per liter atau karbendazim.', tag: 'sakit' },
+      { nama: 'Penjarangan buah muda', detail: 'Wajib untuk Ninel dan varietas berbiji besar. Sisakan 1 tandan per tunas.', tag: 'kritis' },
+      { nama: 'Kontrol panjang tunas', detail: 'Potong pucuk 3–5 mata bila tunas lebih dari 1,2 meter agar energi tersalur ke buah.', tag: 'pangkas' },
+      { nama: 'Irigasi konsisten', detail: 'Bulan kering: 4–8 liter per pot per hari, atau 20–40 liter per pohon.', tag: 'siram' }
     ]
   },
   {
-    m: 8, nama: 'Agustus', musim: 'Musim kemarau',
-    ch: 'Persiapan siklus 2. Kerangka tajuk mulai terlihat jelas.',
+    m: 8, nama: 'Agustus', musim: 'Puncak kemarau',
+    ch: 'Bulan terkering (8 mm, hampir tanpa hujan). Buah membesar dan gula mulai naik.',
     tugas: [
-      { nama: 'Kontrol vigor dan kerapatan', detail: 'Jika ranting lebih dari 1,5 meter, pangkas pendek 2–3 mata untuk merapikan.', tag: 'pangkas' },
-      { nama: 'Pruning siklus 2', detail: 'Akhir Agustus pangkas 7–8 mata. Sasaran panen siklus 2 adalah November.', tag: 'kritis' },
-      { nama: 'Proteksi terakhir musim kemarau', detail: 'Fungisida untuk melindungi daun tua dan mencegah defoliasi dini menjelang musim hujan.', tag: 'sakit' }
+      { nama: 'Jaga air jangan sampai kurang', detail: 'Ini bulan paling kering. Kekurangan air di fase ini membuat buah kecil dan pecah saat hujan datang.', tag: 'kritis' },
+      { nama: 'Cek Brix mingguan', detail: 'Pakai refractometer. Ukur, jangan menebak dari warna saja.', tag: 'panen' },
+      { nama: 'Pemupukan pembesaran buah', detail: 'Turunkan nitrogen, naikkan kalium: NPK 0-0-60 atau KALINITRA.', tag: 'pupuk' },
+      { nama: 'Pantau tawon dan semut', detail: 'Buah mulai manis. Pasang perangkap sebelum hama datang, bukan sesudah.', tag: 'hama' }
     ]
   },
   {
-    m: 9, nama: 'September', musim: 'Awal musim hujan',
-    ch: 'Siklus 2 mulai berbunga. Kelembapan udara naik.',
+    m: 9, nama: 'September', musim: 'Akhir kemarau',
+    ch: 'Masih kering (11 mm). Panen siklus 1 sekaligus persiapan siklus 2.',
     tugas: [
-      { nama: 'Jaga kelembapan 75–80 persen', detail: 'Kabut halus pada pagi hari. Jangan menyiram pada jam siang terik.', tag: 'siram' },
-      { nama: 'Proteksi botrytis', detail: 'Kelembapan tinggi saat bunga mekar adalah pemicu ledakan gray mold. Ini titik kritis.', tag: 'kritis' },
-      { nama: 'Penjarangan bunga Ninel wajib', detail: 'Setelah buah sebesar 5 mm, gunting sebagian buah. Sisakan 60–80 butir per tandan.', tag: 'kritis' },
-      { nama: 'Kontrol tunas ulang', detail: 'Buang tunas liar. Target kepadatan satu tunas per satu tangkai buah.', tag: 'pangkas' }
+      { nama: 'PANEN SIKLUS 1', detail: 'Panen pagi hari saat embun sudah menguap. Potong seluruh tandan dengan gunting tajam.', tag: 'panen' },
+      { nama: 'Pruning pasca panen', detail: 'Pangkas 3–4 mata setelah panen untuk memicu tunas pengganti yang produktif.', tag: 'kritis' },
+      { nama: 'Hitung hasil per pohon', detail: 'Catat jumlah tandan dikali beratnya. Ini acuan pengaturan musim depan.', tag: 'panen' },
+      { nama: 'Siapkan siklus 2', detail: 'Rencanakan pruning siklus 2 sekitar Oktober, sebelum hujan naik lagi.', tag: 'kritis' }
     ]
   },
   {
-    m: 10, nama: 'Oktober', musim: 'Musim hujan',
-    ch: 'Puncak hujan kedua. Buah membesar, waspadai busuk.',
+    m: 10, nama: 'Oktober', musim: 'Transisi kemarau → hujan',
+    ch: 'Hujan mulai naik (40 mm). Suhu tertinggi tahun ini (rata-rata 28,2 °C).',
     tugas: [
-      { nama: 'Buang daun bawah', detail: 'Buang 6–8 daun paling bawah. Tajuk yang lebih terbuka menurunkan gray mold secara dramatis.', tag: 'kritis' },
-      { nama: 'Pangkas daun bertumpuk', detail: 'Buang daun di dalam tajuk yang saling menumpuk. Maksimal 25 persen total daun per sesi.', tag: 'pangkas' },
-      { nama: 'Siram selektif dan jaga drainase', detail: 'Jangan biarkan air menggenang lebih dari 6 jam. Gunakan raised bed setinggi 15–20 cm.', tag: 'siram' },
-      { nama: 'Semprot preventif tiap 10–14 hari', detail: 'Mankozeb, tembaga, atau karbendazim. Perpendek interval saat hujan deras.', tag: 'sakit' }
+      { nama: 'PRUNING SIKLUS 2', detail: 'Pangkas 7–8 mata. Sasaran panen Desember–Januari.', tag: 'kritis' },
+      { nama: 'Waspadai panas ekstrem', detail: 'Oktober adalah bulan terpanas. Pastikan tanaman tidak kekurangan air saat tunas baru keluar.', tag: 'siram' },
+      { nama: 'Buang daun bawah', detail: 'Buang 6–8 daun paling bawah untuk membuka tajuk sebelum hujan datang.', tag: 'pangkas' }
     ]
   },
   {
-    m: 11, nama: 'November', musim: 'Musim hujan',
-    ch: 'Buah matang dan Brix naik. Rasa sudah manis, tetapi risiko penyakit juga tinggi.',
+    m: 11, nama: 'November', musim: 'Awal musim hujan',
+    ch: 'Hujan naik (140 mm). Bunga siklus 2 mekar bersamaan dengan datangnya kelembapan.',
     tugas: [
-      { nama: 'Cek Brix dua kali seminggu', detail: 'Jupiter 20+ Brix, Ninel 16+ Brix, atau sekitar tiga minggu setelah puncak gula.', tag: 'panen' },
-      { nama: 'Lindungi tandan Ninel', detail: 'Bungkus atau beri keranjang pelindung. Tandan 1,5 kg rentan pecah dan busuk.', tag: 'kritis' },
-      { nama: 'Cegah tawon dan semut', detail: 'Perangkap feromon, larutan gula, atau kain penutup. Jupiter hampir kebal, Ninel tidak.', tag: 'hama' },
-      { nama: 'Atur waktu semprot', detail: 'Semprot pagi atau sore. Jangan menyemprot tepat sebelum hujan turun.', tag: 'sakit' }
+      { nama: 'Proteksi botrytis', detail: 'Kelembapan tinggi saat bunga mekar adalah pemicu ledakan gray mold. Ini titik paling kritis siklus 2.', tag: 'kritis' },
+      { nama: 'Penjarangan bunga', detail: 'Setelah buah sebesar 5 mm, gunting sebagian buah. Sisakan 60–80 butir per tandan untuk varietas berbiji besar.', tag: 'kritis' },
+      { nama: 'Semprot preventif tiap 10–14 hari', detail: 'Mankozeb, tembaga, atau karbendazim. Perpendek interval saat hujan mulai sering.', tag: 'sakit' },
+      { nama: 'Siapkan atap plastik', detail: 'Pasang sebelum puncak hujan Desember–Januari.', tag: 'sakit' }
     ]
   },
   {
     m: 12, nama: 'Desember', musim: 'Musim hujan',
-    ch: 'Panen siklus 2 sekaligus masa istirahat. Waktunya mengevaluasi data musim ini.',
+    ch: 'Hujan deras kembali (283 mm). Buah siklus 2 mendekati matang di tengah risiko tinggi.',
     tugas: [
-      { nama: 'Panen siklus 2', detail: 'Panen pagi hari saat embun sudah menguap. Potong seluruh tandan.', tag: 'panen' },
-      { nama: 'Pruning akhir siklus', detail: 'Tutup siklus dengan pangkas 4–6 mata, lalu diamkan sekitar seminggu.', tag: 'kritis' },
-      { nama: 'Perawatan tanah', detail: 'Tambahkan satu karung pupuk kandang matang dan setengah karung sekam per pohon di sekitar akar.', tag: 'pupuk' },
+      { nama: 'Lindungi tandan', detail: 'Bungkus atau beri keranjang pelindung. Tandan berat rentan pecah dan busuk.', tag: 'kritis' },
+      { nama: 'Semprot rutin jangan bolos', detail: 'Ini masa paling rentan. Semprot pagi atau sore, jangan tepat sebelum hujan.', tag: 'sakit' },
+      { nama: 'Cegah tawon dan semut', detail: 'Perangkap feromon, larutan gula, atau kain penutup.', tag: 'hama' },
+      { nama: 'Panen siklus 2', detail: 'Panen saat Brix sudah cukup dan rasa matang, bukan hanya karena warnanya bagus.', tag: 'panen' },
       { nama: 'Evaluasi musim', detail: 'Catat hasil, Brix, serangan penyakit, dan harga jual. Sesuaikan kalender tahun depan.', tag: 'admin' }
     ]
   }
@@ -193,7 +287,7 @@ const PANDUAN = [
       'Orientasi timur–barat umumnya lebih baik daripada utara–selatan. Hindari bayangan permanen dari bangunan.',
       'Angin membantu mencegah jamur, tetapi angin yang terlalu kencang membuat buah kering.',
       'Jauhkan tanaman minimal 60 cm dari dinding rumah karena dinding menyimpan dan memancarkan panas.',
-      'Hindari lahan yang tergenang air, terutama pada musim hujan November sampai April.'
+      'Di Pasuruan, ketinggian ideal sampai sekitar 300 mdpl. Suhu optimal 25–31 °C.'
     ],
     tips: 'Amati lokasi selama satu hari penuh: catat jam berapa matahari mulai mengenai tanaman sampai matahari terbenam.'
   },
@@ -214,7 +308,7 @@ const PANDUAN = [
     ringkas: 'Minimal 40 liter, ideal 60 sampai 80 liter. Lubang drainase wajib ada.',
     detail: [
       'Jupiter: bisa mulai dari 30 sampai 40 liter, lalu naikkan ke 60 liter saat dewasa.',
-      'Ninel: wajib 60 sampai 80 liter sejak awal karena tandan 1,5 kg membutuhkan perakaran yang banyak.',
+      'Ninel: wajib 60 sampai 80 liter sejak awal karena tandannya berat dan butuh perakaran banyak.',
       'Bahan yang cocok: terakota, drum plastik, atau pot semen.',
       'Isi dasar dengan batu kerikil setebal 3 sampai 5 cm sebagai lapisan drainase.',
       'Wadah harus punya kaki atau alas agar air bisa keluar dari lubang bawah.'
@@ -223,32 +317,32 @@ const PANDUAN = [
   },
   {
     step: 4, judul: 'Menanam Bibit', icon: 'Tanam',
-    ringkas: 'Gali lubang dua kali ukuran pot, ganti tanah galian dengan media, lalu tanam dalam.',
+    ringkas: 'Pilih bibit berumur 3–4 bulan, ganti tanah galian dengan media, lalu tanam cukup dalam.',
     detail: [
+      'Bibit yang dianjurkan berumur sekitar 3–4 bulan dengan daun dan tunas yang sehat, serta bebas hama dan penyakit.',
       'Buat lubang minimal satu setengah sampai dua kali diameter pot. Buang tanah galian dan ganti dengan media.',
       'Tanam cukup dalam agar bagian batang bawah tertutup media.',
       'Padatkan media dengan ringan, jangan dipukul atau ditekan keras.',
       'Siram satu ember penuh setelah tanam untuk memadatkan media.',
-      'Beri naungan sementara 7 sampai 10 hari jika daun cepat layu.',
       'Beri label yang jelas berisi varietas dan tanggal tanam. Ini kunci pengarsipan data Anda.'
     ],
-    tips: 'Stek lebih disarankan daripada benih karena mempertahankan karakter varietas secara persis.'
+    tips: 'Stek lebih disarankan daripada benih karena mempertahankan karakter varietas secara persis. Pastikan bibit berlabel jelas asal varietasnya.'
   },
   {
     step: 5, judul: 'Struktur dan Trellis', icon: 'Trellis',
     ringkas: 'Bangun trellis setinggi 2 meter, selebar 1,2 meter, dengan jarak 1,5 sampai 2 meter antar tanaman.',
     detail: [
       'Trellis: tinggi 2 meter, lebar 1 sampai 1,2 meter, dengan 3 sampai 4 tingkat kawat.',
-      'Jarak tanam: 1,5 sampai 2 meter antar baris dan 1,5 meter di dalam baris. Ninel butuh lebih lebar.',
+      'Jarak tanam: 1,5 sampai 2 meter antar baris dan 1,5 meter di dalam baris. Varietas bertandan berat butuh lebih lebar.',
       'Arahkan batang utama naik ke satu kawat, lalu sebarkan horizontal dua arah untuk sistem V.',
       'Ikat dengan pita plastik, jangan kawat langsung, karena batang muda masih rapuh.',
       'Pastikan tersedia cukup mata buah di sepanjang batang.'
     ],
-    tips: 'Ninel paling produktif saat batangnya dibentangkan horizontal. Posisikan lebih tinggi daripada Jupiter.'
+    tips: 'Varietas dengan tandan berat paling produktif saat batangnya dibentangkan horizontal dan ditopang kuat.'
   },
   {
     step: 6, judul: 'Pruning atau Pemangkasan', icon: 'Pruning',
-    ringkas: 'Waktu pruning menentukan waktu panen. Ini keterampilan nomor satu yang perlu dikuasai.',
+    ringkas: 'Waktu pruning menentukan waktu panen. Di Pasuruan, pangkas setelah hujan berhenti.',
     detail: [
       'Pruning buah (generatif): sisakan 5 sampai 8 mata tunas (rod) atau 10 sampai 12 mata (cane). Makin pendek, buah makin besar tetapi jumlah totalnya berkurang.',
       'Pruning pembesaran (vegetatif): sisakan 2 sampai 3 mata untuk memperbesar batang.',
@@ -257,7 +351,7 @@ const PANDUAN = [
       'Buang tunas liar (sucker) dari pangkal setiap 2 minggu.',
       'Sterilkan gunting dengan alkohol 70 persen setiap kali berpindah tanaman.'
     ],
-    tips: 'Di Pasuruan Anda bisa memangkas dua kali setahun, yaitu Februari dan Agustus, sehingga mendapatkan dua siklus panen.'
+    tips: 'Di Pasuruan, jangan memangkas saat hujan masih deras — batang muda rentan busuk. Tunggu sampai hujan berhenti, sekitar Mei, lalu pangkas lagi sekitar Oktober untuk siklus kedua.'
   },
   {
     step: 7, judul: 'Pemupukan', icon: 'Pupuk',
@@ -277,36 +371,36 @@ const PANDUAN = [
     detail: [
       'Kelembapan media optimal 60 sampai 80 persen — terasa lembap tetapi tidak basah kuyup.',
       'Cuaca cerah: siram pagi dan sore. Hindari menyiram jam 12 sampai 14 karena penguapan tinggi.',
-      'Musim hujan: kurangi volume air. Air yang mengendap di zona akar menyebabkan busuk akar.',
-      'Selalu pastikan kelebihan air bisa keluar. Pot harus berada di atas kaki atau alas.',
-      'Kabut daun membantu menjaga kelembapan saat kemarau, tetapi jangan membasahi buah 24 jam sebelum panen.'
+      'Musim hujan (November–April): kurangi volume air. Air yang mengendap di zona akar menyebabkan busuk akar.',
+      'Puncak kemarau (Juli–Agustus): justru paling butuh air. Kekurangan air di fase ini membuat buah pecah saat hujan datang.',
+      'Selalu pastikan kelebihan air bisa keluar. Pot harus berada di atas kaki atau alas.'
     ],
-    tips: 'Sistem tetes sederhana dari botol bekas dan selang cukup efektif untuk skala pekarangan saat kemarau.'
+    tips: 'Perhatikan bulan Agustus — hanya 8 mm hujan sebulan. Ini bulan paling kering dan paling sering membuat tanaman stres tanpa disadari.'
   },
   {
     step: 9, judul: 'Perlindungan Tanaman', icon: 'Proteksi',
     ringkas: 'Pencegahan lebih penting daripada pengobatan. Semprot preventif setiap 10 sampai 14 hari saat risiko tinggi.',
     detail: [
-      'Oidium (embun tepung): serbuk putih di permukaan atas daun. Pakai sulfur 2 gram per liter atau karbendazim. Puncaknya saat pergantian musim dan kemarau.',
-      'Downy mildew: bintik kekuningan di atas dan lapisan putih di bawah daun. Pakai mankozeb dan gunakan atap plastik saat hujan.',
-      'Gray mold (Botrytis): buah mengkerut kecoklatan. Jaga sanitasi kebun dan kurangi kepadatan tajuk.',
-      'Black rot: bercak coklat dengan bintik hitam. Buang buah yang terinfeksi dan jaga kebersihan kebun.',
-      'Tungau merah: titik merah kecil di bawah daun. Semprot air bertekanan atau sulfur.',
-      'Tawon dan semut, terutama pada Ninel: pakai perangkap feromon, jaring, atau penutup buah.'
+      'Oidium (embun tepung): serbuk putih di permukaan atas daun. Sumber Kementerian Pertanian menganjurkan bupirimat, oksitiokuineks, atau benomil. Puncaknya saat kemarau kering.',
+      'Gray mold (Botrytis): buah mengkerut dan berubah coklat tua. Kendalikan dengan sanitasi kebun, bubur bordo, atau fungisida maneb dan zineb.',
+      'Downy mildew (bulai): bintik kekuningan di atas dan lapisan putih di bawah daun. Pakai mankozeb atau karbendazim, dan atap plastik saat musim hujan.',
+      'Antraknosa: bintik coklat meluas dengan massa spora jingga. Serang buah hampir masak. Pakai zineb, maneb, atau mankozeb.',
+      'Karat daun: tepung merah jingga di bawah daun tua. Pakai zineb, maneb, atau sulfur.',
+      'Tawon dan semut, terutama pada varietas berbiji besar: pakai perangkap feromon, jaring, atau penutup buah.'
     ],
-    tips: 'Penyakit utama di Pasuruan adalah downy mildew dan gray mold saat hujan, serta oidium saat kemarau. Semuanya bisa ditekan dengan sanitasi dan sirkulasi udara.'
+    tips: 'Penyakit utama di Pasuruan: downy mildew dan gray mold saat hujan (November–April), serta oidium saat kemarau kering (Juli–September). Semuanya bisa ditekan dengan sanitasi dan sirkulasi udara.'
   },
   {
     step: 10, judul: 'Panen dan Pascapanen', icon: 'Panen',
     ringkas: 'Panen pagi hari, potong seluruh tandan, sisakan 5 sampai 10 ruas tangkai.',
     detail: [
-      'Ciri siap panen Jupiter: buah merah keunguan penuh, bertekstur lembut, Brix 20 ke atas.',
-      'Ciri siap panen Ninel: merah pekat, rasa menyatu antara manis dan asam, Brix 16 sampai 18.',
+      'Ciri siap panen Jupiter: buah merah kebiruan penuh, bertekstur lembut, aroma muskat tegas.',
+      'Ciri siap panen varietas berbiji besar: warna pekat, rasa menyatu antara manis dan asam.',
+      'Ukur Brix dengan refractometer. Jangan mengandalkan warna saja.',
       'Potong seluruh tandan dengan gunting tajam, jangan ditarik.',
       'Sisakan 5 sampai 10 ruas tangkai agar buah tidak jatuh.',
       'Cuci dengan air mengalir ditambah sedikit baking soda, lalu keringkan.',
-      'Simpan di kulkas pada suhu 4 sampai 5 derajat. Daya tahan 5 sampai 14 hari, Jupiter lebih tahan.',
-      'Hitung hasil: jumlah tandan dikali berat rata-rata.'
+      'Simpan di kulkas pada suhu 4 sampai 5 derajat. Daya tahan 5 sampai 14 hari.'
     ],
     tips: 'Anggur tidak matang lagi setelah dipetik. Panen saat rasanya sudah matang, bukan hanya saat warnanya bagus.'
   }
@@ -315,47 +409,79 @@ const PANDUAN = [
 /* ---------- DAFTAR PUSTAKA ---------- */
 const REFERENSI = [
   {
-    kategori: 'Buku dan Pedoman Resmi',
+    kategori: 'Sumber Resmi Varietas',
     items: [
-      'Direktorat Jenderal Hortikultura, Kementerian Pertanian. Buku Pedoman Budidaya Anggur (Vitis vinifera).',
-      'Balai Penerapan Standar Instrumen Pertanian Banten. Teknologi Budidaya Tanaman Anggur (Vitis vinifera).',
-      'Soegito dan Sidik, N. I. (1991). Hama dan Penyakit pada Tanaman Anggur, dalam Buku Budidaya Anggur. Repository Pertanian.',
-      'Refnizuida dan Alf. Agribisnis Tanaman Anggur. Jurnal ISSJ, Universitas Trunojoyo Madura.',
-      'Budiati. Budidaya Anggur dalam Pot. Penerbit Perpusnas.'
+      'Clark, J. R. & Moore, J. N. Grapevine plant named "Jupiter". US Plant Patent USPP13309P2. University of Arkansas. https://patents.google.com/patent/USPP13309P2/en',
+      'Clark, J. R. (1999). "Jupiter" Seedless Grape. HortScience 34(7): 1297–1299. American Society for Horticultural Science.',
+      'University of Arkansas Division of Agriculture. Jupiter (seedless table grape) — deskripsi rilis varietas.',
+      'Kraynov, V. N. (Ukraina). Ninel / Nizina-2 — hibrida kompleks (Talisman × Kishmish Archer). Deskripsi dari sumber pembibitan.'
     ]
   },
   {
-    kategori: 'Jurnal Penelitian',
+    kategori: 'Varietas Unggul Nasional (Kementerian Pertanian)',
     items: [
-      'Historiawati, H. (2023). Perbanyakan Tanaman Anggur Ninel (Vitis vinifera L) dengan Beberapa Grapevine Rootstock. Jurnal Vigor, Universitas Tidar.',
-      'Jahrudin, A. (2024). Perbandingan Kualitas Bibit Anggur On Root dan Grafted. Prosiding SINASIS, Universitas Indira Ganesha.',
-      'Hartantiko, I. J., Niswatin, R. K., dan Setiawan, A. B. (2023). Identifikasi Gejala dan Penyakit Tanaman Anggur dengan Metode Forward dan Backward Chaining. Jurnal Nusantara of Engineering 6(2): 152–160.',
-      'A Review on Grape Growing in Tropical Regions. International Journal of Agricultural Sciences.',
-      'Ghiglieno, I. (2025). Evaluation of the Impact of Vine Pruning Periods on Grape. OENO One.',
-      'Tanjung, D. D. (2026). Peningkatan Minat Budidaya Anggur. Jurnal Ilmu Pertanian, Universitas Mataram.',
-      'Puspitasari, N. S. (2024). Pendampingan Pengendalian Fungi pada Anggur Caru. Jurnal JAMALI, Universitas Islam Indonesia.'
+      'Balitjestro, Balitbangtan. Deskripsi Varietas Anggur Jestro AG 86.',
+      'Balitjestro, Balitbangtan. SK Pelepasan Varietas Anggur Jestro AG 60.',
+      'Dinas Komunikasi dan Informatika Provinsi Jawa Timur (2021). Prabu Bestari, Anggur Probolinggo Yang Jadi Pesaing Anggur Impor.',
+      'Balitbang Pertanian, Kementerian Pertanian. Deskripsi Varietas Anggur Prabu Bestari.',
+      'Sukadi, Andriani, A., Harwanto, Yunimar, Tresnawati, T., Fami, A., Muhammad, F., Aprilianti, D., & Yustisyia, M. L. (2021). Budidaya Tanaman Anggur. Balai Besar Pengkajian dan Pengembangan Teknologi Pertanian.',
+      'Pusat Perpustakaan dan Literasi Pertanian (2026). Anggur Tropis Indonesia: Saatnya Menguasai Pasar Domestik.'
     ]
   },
   {
-    kategori: 'Sumber Deskriptif Varietas',
+    kategori: 'Penyakit dan Pengendalian',
     items: [
-      'Vinograd.cc. Deskripsi Varietas Anggur Ninel (Nizina-2).',
-      'Vinograd-Loza. Deskripsi Kishmish Jupiter: Deskripsi, Foto, dan Ulasan.',
-      'Megasad.net. Vinograd Jupiter, Deskripsi dan Karakteristik.',
-      'Sortoved.ru. Varietas Jupiter.',
-      'Ryabushin, V. N. Ninel (anggur meja tanpa biji partenokarpi).',
-      'Kraynov, V. N. (Ukraina). Deskripsi resmi varietas Ninel.'
+      'Pusat Perpustakaan dan Literasi Pertanian, Kementerian Pertanian (2024). Info Teknologi: Kenali Penyakit Utama pada Anggur.',
+      'Hartantiko, I. J., Niswatin, R. K., & Setiawan, A. B. (2023). Identifikasi Gejala dan Penyakit pada Tanaman Anggur dengan Metode Forward Chaining dan Backward Chaining. Jurnal Nusantara of Engineering 6(2): 152–160.',
+      'Soegito & Sidik, N. I. (1991). Hama dan Penyakit pada Tanaman Anggur, dalam Budi Daya Anggur. Repository Pertanian.',
+      'Puspitasari, N. S. (2024). Pendampingan Pengendalian Fungi pada Anggur Caru. Jurnal JAMALI, Universitas Islam Indonesia.',
+      'University of Kentucky Plant Pathology. Simplified Backyard Grape Spray Guide.'
     ]
   },
   {
-    kategori: 'Referensi Teknis Umum',
+    kategori: 'Iklim dan Agroklimat',
     items: [
-      'University of Minnesota Extension. Post-Harvest Disease Management for Grapevine Downy and Powdery Mildew.',
-      'University of Kentucky Plant Pathology. Simplified Backyard Grape Spray Guide.',
-      'Purdue Horticulture and Family Education. Early Season Pest and Disease Control in Grapevines.',
-      'University of Missouri Extension. Fruit Spray Schedules for the Homeowner.',
+      'Climate-Data.org. Bangil, Jawa Timur, Indonesia — data iklim bulanan.',
+      'BMKG (2022). Buku Peta Rata-Rata Curah Hujan dan Hari Hujan Periode 1991–2020 Indonesia.',
+      'Amrullah, F. Analisis Sebaran Curah Hujan Kabupaten Pasuruan 2002–2017. Universitas Brawijaya.',
+      'Balai Pengkajian Teknologi Pertanian. Hubungan Curah Hujan dengan Produktivitas Apel di Kabupaten Pasuruan. Jurnal Tanaman Industri.'
+    ]
+  },
+  {
+    kategori: 'Teknik Budidaya Tropis',
+    items: [
+      'Lu, G., Zhang, K., Que, Y., & Li, Y. (2023). Grapevine double cropping: a magic technology. Frontiers in Plant Science 14: 1173985.',
+      'Camargo, U. A. (2005). Grape Management Techniques in Tropical Regions.',
       'ISHS. On the Growing of Grapevines in the Tropics, Acta Horticulturae 662.',
-      'Camargo, U. A. (2005). Grape Management Techniques in Tropical Regions.'
+      'University of Minnesota Extension. Post-Harvest Disease Management for Grapevine Downy and Powdery Mildew.'
     ]
   }
+];
+
+/* ---------- STATUS KLAIM ----------
+   Transparansi: mana klaim yang didukung sumber dan mana yang masih perkiraan.
+   Diberi kode agar bisa ditampilkan di tab Riset & Sumber. */
+const STATUS_KLAIM = [
+  { klaim: 'Jupiter dirilis University of Arkansas tahun 1998', status: 'terverifikasi', sumber: 'Paten USPP13309 + HortScience 34(7)' },
+  { klaim: 'Jupiter adalah persilangan Arkansas 1258 × Arkansas 1672', status: 'terverifikasi', sumber: 'Paten USPP13309' },
+  { klaim: 'Jupiter tahan pecah buah dan tahan jamur sedang–kuat', status: 'terverifikasi', sumber: 'Paten USPP13309' },
+  { klaim: 'Jupiter produktif (25–29 ton/acre dalam uji Arkansas)', status: 'terverifikasi', sumber: 'HortScience 34(7): 1297–1299' },
+  { klaim: 'Paten Jupiter kedaluwarsa 11 Januari 2019', status: 'terverifikasi', sumber: 'USPTO' },
+  { klaim: 'Jupiter hampir tidak diserang tawon', status: 'belum terverifikasi', sumber: 'Tidak ditemukan di sumber resmi — klaim dari praktik lapangan' },
+  { klaim: 'Jupiter mencapai 22–24 °Brix di Pasuruan', status: 'belum terverifikasi', sumber: 'Sumber Arkansas menyebut 21 °Brix; angka lokal belum diukur' },
+  { klaim: 'Ninel adalah hibrida Talisman × Kishmish Archer', status: 'terverifikasi', sumber: 'Sumber breeder/pembibitan' },
+  { klaim: 'Ninel perlu penjarangan buah', status: 'praktik lapangan', sumber: 'Konsisten dengan kebutuhan varietas bertandan berat' },
+  { klaim: 'Ninel produksi 10–15 kg per pohon', status: 'belum terverifikasi', sumber: 'Angka pembibitan, tidak ada di publikasi ilmiah' },
+  { klaim: 'Ninel 12–15 g per butir', status: 'belum terverifikasi', sumber: 'Angka penjual bibit' },
+  { klaim: 'Musim hujan Pasuruan November–April', status: 'terverifikasi', sumber: 'Climate-Data.org (Bangil) + BMKG' },
+  { klaim: 'Puncak kemarau Pasuruan Juli–Agustus (8–22 mm)', status: 'terverifikasi', sumber: 'Climate-Data.org (Bangil)' },
+  { klaim: 'Petani Probolinggo memangkas produksi setelah hujan berhenti (Mei)', status: 'terverifikasi', sumber: 'Dinas Kominfo Jatim, KP Banjarsari' },
+  { klaim: 'Di tropis bisa dua panen setahun', status: 'terverifikasi', sumber: 'Lu et al. (2023), Frontiers in Plant Science' },
+  { klaim: 'Double cropping menaikkan hasil 10–20%', status: 'terverifikasi', sumber: 'Lu et al. (2023)' },
+  { klaim: 'Jestro AG 86 bisa panen 95–100 hari setelah pangkas', status: 'terverifikasi', sumber: 'Balitjestro' },
+  { klaim: 'Prabu Bestari produksi 10–30 kg/pohon, gula 20 °Brix', status: 'terverifikasi', sumber: 'Dinas Kominfo Jatim + Balitbangtan' },
+  { klaim: 'Varietas unggul nasional Indonesia bersaing dengan impor', status: 'terverifikasi', sumber: 'Kementerian Pertanian (2026)' },
+  { klaim: 'Dosis pupuk 20 gram/pohon per aplikasi', status: 'praktik lapangan', sumber: 'Praktik umum pekebun, belum diuji terkontrol' },
+  { klaim: 'Resep media 1:1:1 pupuk kandang:sekam:tanah', status: 'praktik lapangan', sumber: 'Praktik pekebun, belum diuji terkontrol' },
+  { klaim: 'Media tanam difermentasi minimal 2 minggu', status: 'praktik lapangan', sumber: 'Praktik umum' }
 ];

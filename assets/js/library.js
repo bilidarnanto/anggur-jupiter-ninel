@@ -76,6 +76,40 @@ const PDF_INTERNAL = [
 /* Tautan eksternal — sudah diverifikasi HTTP 200 pada tanggal build */
 const TAUTAN = [
   {
+    kategori: 'Varietas Unggul Nasional',
+    items: [
+      { t: 'Anggur Tropis Indonesia: Saatnya Menguasai Pasar Domestik — Pustaka Kementerian Pertanian',
+        u: 'https://pustaka.bppsdmp.pertanian.go.id/info-literasi/info-literasi-anggur-tropis-indonesia-saatnya-menguasai-pasar-domestik',
+        n: 'Tiga varietas unggul Balitbangtan: Jestro AG 86, Jestro AG 60, dan Prabu Bestari.' },
+      { t: 'Deskripsi Varietas Anggur Jestro AG 86 — Balitjestro',
+        u: 'https://bulelengkab.go.id/informasi/download/52-hasil-penelitian-anggur-varietas-jestro-ag-86-balitbang-pertanian-kementan.pdf',
+        n: 'Varietas genjah: panen 95–100 hari setelah pangkas, hasil 9–16 kg/pohon.' },
+      { t: 'Deskripsi Varietas Anggur Prabu Bestari — Balitbangtan',
+        u: 'https://bulelengkab.go.id/informasi/download/15-hasil-penelitian-anggur-varietas-prabu-bestari-balitbang-pertanian-kementan.pdf',
+        n: 'Gula 20 °Brix, asam 1,9%, hasil 10–30 kg/pohon.' },
+      { t: 'Prabu Bestari, Anggur Probolinggo Pesaing Anggur Impor — Kominfo Jatim',
+        u: 'https://kominfo.jatimprov.go.id/berita/prabu-bestari-anggur-probolinggo-yang-jadi-pesaing-anggur-impor',
+        n: 'Praktik nyata di KP Banjarsari: pangkas setelah hujan berhenti, panen raya setelah pangkas kedua.' },
+      { t: 'Karakteristik Varietas Red Pince (Prabu Bestari) dan Cardinal — UIN Malang',
+        u: 'https://ejournal.uin-malang.ac.id/index.php/bio/article/view/1787',
+        n: 'Kajian akademik varietas Probolinggo.' }
+    ]
+  },
+  {
+    kategori: 'Sumber Resmi Varietas Impor',
+    items: [
+      { t: 'Paten tanaman Jupiter — USPP13309P2',
+        u: 'https://patents.google.com/patent/USPP13309P2/en',
+        n: 'Sumber primer: persilangan Arkansas 1258 × 1672, Clark & Moore, University of Arkansas.' },
+      { t: 'Jupiter Seedless Grape — HortScience 34(7)',
+        u: 'https://journals.ashs.org/downloadpdf/view/journals/hortsci/34/7/article-p1297.pdf',
+        n: 'Publikasi rilis resmi dengan data hasil 25–29 ton/acre.' },
+      { t: 'Jupiter — University of Arkansas Extension',
+        u: 'https://www.uaex.uada.edu/farm-ranch/crops-commercial-horticulture/docs/jupiter.pdf',
+        n: 'Lembar deskripsi resmi varietas.' }
+    ]
+  },
+  {
     kategori: 'Pedoman Resmi Pemerintah',
     items: [
       { t: 'Buku Pedoman Budidaya Anggur (Vitis vinifera) — Ditjen Hortikultura',
@@ -83,7 +117,10 @@ const TAUTAN = [
         n: 'Pedoman nasional. Sumber resmi Kementerian Pertanian.' },
       { t: 'Info Teknologi: Kenali Penyakit Utama pada Anggur — Pustaka BPPSDMP',
         u: 'https://pustaka.bppsdmp.pertanian.go.id/info-literasi/info-teknologi-kenali-penyakit-utama-pada-anggur',
-        n: 'Ringkasan tujuh penyakit utama beserta patogen dan bahan yang direkomendasikan.' },
+        n: 'Tujuh penyakit utama beserta patogen dan bahan aktif yang direkomendasikan. Sumber utama tab Perlindungan.' },
+      { t: 'Budidaya Tanaman Anggur — Balai Besar Pengkajian dan Pengembangan Teknologi Pertanian',
+        u: 'https://repository.pertanian.go.id/handle/123456789/17470',
+        n: 'Buku panduan budidaya anggur Kementerian Pertanian (2021).' },
       { t: 'GAP13 — Kumpulan Pedoman Good Agricultural Practice Hortikultura',
         u: 'https://hortikultura.pertanian.go.id/gap13/',
         n: 'Indeks seluruh pedoman hortikultura nasional, termasuk tanaman anggur.' }
@@ -138,6 +175,9 @@ const TAUTAN = [
       { t: 'Grape Production Guide — Perennia Food',
         u: 'https://www.perennia.ca/wp-content/uploads/2022/05/Grape-Production-Guide-2022-MAY-web.pdf',
         n: 'Panduan produksi buah anggur, termasuk pemilihan lahan dan pengelolaan tanah.' },
+      { t: 'Grapevine double cropping: a magic technology — Frontiers in Plant Science (2023)',
+        u: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10140338/',
+        n: 'Dasar ilmiah dua panen setahun di daerah bersuhu rata-rata di atas 20 °C, termasuk penjelasan tunas musim panas.' },
       { t: 'On the Growing of Grapevines in the Tropics — ISHS Acta 662',
         u: 'https://ishs.org/ishs-article/662_2/',
         n: 'Dasar bahwa anggur tropis tetap hijau dan dapat dipangkas saat aktif tumbuh.' },
@@ -147,6 +187,20 @@ const TAUTAN = [
       { t: 'Post-Harvest Disease Management for Grapevine — U. Minnesota',
         u: 'https://enology.umn.edu/grapes-how/post-harvest-disease-management-grapevine-downy-mildew-and-powdery-mildew',
         n: 'Pengelolaan penyakit yang muncul menjelang akhir musim.' }
+    ]
+  },
+  {
+    kategori: 'Iklim Pasuruan',
+    items: [
+      { t: 'Data iklim Bangil, Kabupaten Pasuruan — Climate-Data.org',
+        u: 'https://en.climate-data.org/asia/indonesia/east-java/bangil-977151/',
+        n: 'Curah hujan, hari hujan, dan kelembapan bulanan. Dasar kalender 12 bulan di situs ini.' },
+      { t: 'Buku Peta Rata-Rata Curah Hujan dan Hari Hujan 1991–2020 — BMKG',
+        u: 'https://iklim.bmkg.go.id/bmkgadmin/storage/buletin/20220511_BukuNormal_Lengkap_FormatBuku.pdf',
+        n: 'Normal curah hujan resmi BMKG.' },
+      { t: 'Anggur Bali, Primadona Anggur Nusantara — Dinas Pertanian Buleleng',
+        u: 'https://distankan.bulelengkab.go.id/informasi/detail/artikel/anggur-bali-primadona-anggur-nusantara-57',
+        n: 'Sejarah varietas lokal Bali dan wilayah sentra anggur.' }
     ]
   },
   {

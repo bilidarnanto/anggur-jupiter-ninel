@@ -17,11 +17,11 @@ function renderRingkasan() {
   const map = document.getElementById('cycle-map');
   const musim = [
     { label: 'Jan', cls: 'hujan' }, { label: 'Feb', cls: 'hujan' },
-    { label: 'Mar', cls: 'semi' },   { label: 'Apr', cls: 'kemarau' },
-    { label: 'Mei', cls: 'kemarau' },{ label: 'Jun', cls: 'panen' },
-    { label: 'Jul', cls: 'kemarau' },{ label: 'Agu', cls: 'kemarau' },
-    { label: 'Sep', cls: 'semi' },   { label: 'Okt', cls: 'hujan' },
-    { label: 'Nov', cls: 'panen' },  { label: 'Des', cls: 'hujan' }
+    { label: 'Mar', cls: 'hujan' }, { label: 'Apr', cls: 'semi' },
+    { label: 'Mei', cls: 'kemarau' },{ label: 'Jun', cls: 'kemarau' },
+    { label: 'Jul', cls: 'kemarau' },{ label: 'Agu', cls: 'panen' },
+    { label: 'Sep', cls: 'panen' }, { label: 'Okt', cls: 'semi' },
+    { label: 'Nov', cls: 'hujan' }, { label: 'Des', cls: 'hujan' }
   ];
   const now = new Date().getMonth() + 1;
   map.innerHTML = musim.map((m, i) => `
@@ -29,29 +29,115 @@ function renderRingkasan() {
       <span class="cm-label">${m.label}</span>
     </div>`).join('') + `
     <div class="cm-legend">
-      <span><i class="dot-weather hujan"></i>Hujan berat — fokus pencegahan penyakit</span>
+      <span><i class="dot-weather hujan"></i>Hujan — fokus pencegahan penyakit</span>
       <span><i class="dot-weather semi"></i>Transisi</span>
       <span><i class="dot-weather kemarau"></i>Kemarau — fase produksi terbaik</span>
       <span><i class="dot-weather panen"></i>Jendela panen</span>
     </div>`;
 
-  // kartu musim
+  // kartu musim — mengikuti data curah hujan Pasuruan yang sebenarnya
   const mc = document.getElementById('musim-cards');
   mc.innerHTML = `
     <div class="card">
       <h4>Musim Hujan (Nov–Apr)</h4>
-      <p class="muted">Kelembapan tinggi dan hujan sering. Downy mildew dan gray mold aktif. Fokus: sanitasi,
-      buang daun bawah, drainase, dan kontrol kelembapan. Produksi tetap berjalan, tetapi risikonya tinggi.</p>
+      <p class="muted">Puncaknya Desember–Maret, terbasah Januari (362 mm). Kelembapan tinggi dan hujan
+      hampir setiap hari. Downy mildew dan gray mold aktif. Fokus: sanitasi, buang daun bawah,
+      drainase, dan atap plastik. Jangan memangkas produksi di masa ini.</p>
     </div>
     <div class="card">
-      <h4>Musim Kemarau (Mei–Okt)</h4>
-      <p class="muted">Kering dan panas. Oidium jadi ancaman utama, bisa dikendalikan dengan sulfur.
-      Ini jendela terbaik untuk pembentukan buah dan pematangan gula. Pastikan ketersediaan air irigasi.</p>
+      <h4>Musim Kemarau (Jun–Sep)</h4>
+      <p class="muted">Paling kering Juli–Agustus (Agustus hanya 8 mm). Oidium jadi ancaman utama
+      karena udara kering dan panas. Ini jendela terbaik untuk pembentukan buah dan pematangan gula,
+      tapi justru paling butuh air irigasi.</p>
     </div>
     <div class="card">
-      <h4>Jendela Panen (Jun &amp; Nov–Des)</h4>
+      <h4>Jendela Panen (Agu–Sep &amp; Des–Jan)</h4>
       <p class="muted">Dua siklus setahun bisa dicapai bila Anda memangkas dua kali:
-      Februari untuk panen Juni, dan Agustus untuk panen November–Desember.</p>
+      <b>Mei</b> (setelah hujan berhenti) untuk panen Agustus–September, dan <b>Oktober</b>
+      (sebelum hujan naik) untuk panen Desember–Januari.</p>
+    </div>`;
+}
+
+/* ---------- VARIETAS LOKAL & UNGGUL NASIONAL ---------- */
+function renderVarietasLokal() {
+  const box = document.getElementById('lokal-body');
+  if (!box) return;
+
+  box.innerHTML = VARIETAS_LOKAL.map(v => `
+    <div class="card vcard">
+      <div class="vcard-head">
+        <h3>${v.nama}</h3>
+        <span class="vcard-sub">${v.status}</span>
+      </div>
+      <table class="vtable">
+        <tr><th>Tipe</th><td>${escapeHtml(v.tipe)}</td></tr>
+        <tr><th>Asal</th><td>${escapeHtml(v.asal)}</td></tr>
+        <tr><th>Keunggulan</th><td>${escapeHtml(v.keunggulan)}</td></tr>
+        <tr><th>Catatan</th><td>${escapeHtml(v.catatan)}</td></tr>
+      </table>
+      <p class="vcard-src"><a href="${v.sumber}" target="_blank" rel="noopener">Lihat sumber →</a></p>
+    </div>`).join('');
+}
+
+/* ---------- RISET & SUMBER ---------- */
+function renderRiset() {
+  const box = document.getElementById('riset-body');
+  if (!box) return;
+
+  // ringkasan iklim Pasuruan
+  const iklimBox = document.getElementById('iklim-body');
+  if (iklimBox) {
+    const maks = Math.max(...IKLIM.map(b => b.hujan));
+    iklimBox.innerHTML = `
+      <div class="iklim-chart">
+        ${IKLIM.map(b => `
+          <div class="iklim-col" title="${b.nama}: ${b.hujan} mm, ${b.hari} hari hujan, RH ${b.rh}%">
+            <div class="iklim-bar" style="height:${Math.max(2, (b.hujan / maks) * 100)}%"></div>
+            <span class="iklim-label">${b.nama.slice(0, 3)}</span>
+          </div>`).join('')}
+      </div>
+      <div class="table-wrap">
+        <table class="cmp">
+          <thead><tr><th>Bulan</th><th>Hujan (mm)</th><th>Hari hujan</th><th>Kelembapan</th><th>Status</th></tr></thead>
+          <tbody>
+            ${IKLIM.map(b => `<tr>
+              <td>${b.nama}</td>
+              <td>${b.hujan}</td>
+              <td>${b.hari}</td>
+              <td>${b.rh}%</td>
+              <td>${b.hujan >= 100 ? 'Basah' : b.hujan >= 40 ? 'Transisi' : 'Kering'}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  // tabel status klaim
+  const label = {
+    'terverifikasi': 'Terverifikasi',
+    'praktik lapangan': 'Praktik lapangan',
+    'belum terverifikasi': 'Belum terverifikasi'
+  };
+  const jumlah = { 'terverifikasi': 0, 'praktik lapangan': 0, 'belum terverifikasi': 0 };
+  STATUS_KLAIM.forEach(k => jumlah[k.status]++);
+
+  box.innerHTML = `
+    <div class="lib-stats">
+      <div class="lib-stat"><span class="ls-num">${jumlah['terverifikasi']}</span><span class="ls-label">klaim terverifikasi</span></div>
+      <div class="lib-stat"><span class="ls-num">${jumlah['praktik lapangan']}</span><span class="ls-label">praktik lapangan</span></div>
+      <div class="lib-stat"><span class="ls-num">${jumlah['belum terverifikasi']}</span><span class="ls-label">belum terverifikasi</span></div>
+    </div>
+    <div class="table-wrap">
+      <table class="cmp klaim-table">
+        <thead><tr><th>Klaim</th><th>Status</th><th>Sumber / alasan</th></tr></thead>
+        <tbody>
+          ${STATUS_KLAIM.map(k => `<tr>
+            <td>${escapeHtml(k.klaim)}</td>
+            <td><span class="klaim-badge klaim-${k.status.replace(/ /g, '-')}">${label[k.status]}</span></td>
+            <td class="muted small">${escapeHtml(k.sumber)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
     </div>`;
 }
 
@@ -181,8 +267,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   renderRingkasan();
   renderProfil();
+  renderVarietasLokal();
   renderKalender();
   renderPanduan();
+  renderRiset();
   renderPustaka();
   initChecklist();
   initDiagnosa();

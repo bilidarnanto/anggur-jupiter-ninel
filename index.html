@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistem Budidaya Anggur Jupiter &amp; Ninel — Pasuruan, Jawa Timur</title>
-<meta name="description" content="Panduan lengkap budidaya anggur impor Jupiter dan Ninel untuk skala pekarangan di Pasuruan, Jawa Timur. Kalender 12 bulan, panduan bertahap, mesin diagnosa gejala, dan kalkulator dosis.">
+<meta name="description" content="Panduan budidaya anggur Jupiter dan Ninel untuk skala pekarangan di Pasuruan, Jawa Timur. Kalender 12 bulan berbasis data iklim Pasuruan, panduan bertahap, mesin diagnosa gejala, kalkulator dosis, varietas lokal unggul, dan status keterverifikasian setiap klaim.">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍇</text></svg>">
 </head>
@@ -41,12 +41,14 @@
     <div class="tabs" id="tabs">
       <button class="tab active" data-tab="ringkasan">Ringkasan</button>
       <button class="tab" data-tab="varietas">Varietas</button>
+      <button class="tab" data-tab="lokal">Varietas Lokal</button>
       <button class="tab" data-tab="kalender">Kalender</button>
       <button class="tab" data-tab="checklist">Checklist</button>
       <button class="tab" data-tab="panduan">Panduan</button>
       <button class="tab" data-tab="diagnosa">Diagnosa</button>
       <button class="tab" data-tab="kalkulator">Kalkulator</button>
       <button class="tab" data-tab="pustaka">Pustaka</button>
+      <button class="tab" data-tab="riset">Riset &amp; Sumber</button>
       <button class="tab" data-tab="perpustakaan">Perpustakaan</button>
     </div>
   </div>
@@ -60,8 +62,9 @@
 
     <div class="alert alert-info">
       <b>Panduan ini disusun untuk pekarangan di Pasuruan dan sekitarnya.</b>
-      Data varietas diambil dari deskripsi breeder (Arkansas untuk Jupiter, Kraynov untuk Ninel) dan
-      literatur hortikultura. Dosis pupuk dan pestisida perlu disesuaikan dengan kondisi lapangan.
+      Data varietas diambil dari sumber resmi (paten University of Arkansas untuk Jupiter, deskripsi
+      breeder untuk Ninel) dan literatur hortikultura. Setiap klaim diberi status keterverifikasian
+      di tab <b>Riset &amp; Sumber</b> — termasuk yang belum terverifikasi.
       <b>Selalu baca label produk</b> dan uji dulu pada sebagian kecil tanaman sebelum diterapkan luas.
     </div>
 
@@ -107,16 +110,44 @@
 
     <div class="alert alert-warn">
       <b>Catatan penting soal Ninel.</b> Nama resmi varietas ini adalah <b>Nizina-2</b>.
-      Di daftar varietas, "Ninel" adalah nama dagang yang lebih dikenal di pasar.
+      Di pasaran, "Ninel" adalah nama dagang yang lebih dikenal.
       Pastikan bibit yang Anda beli benar-benar Nizina-2, karena beberapa turunan punya karakter berbeda.
+      Angka produktivitas dan ukuran buah Ninel berasal dari deskripsi pembibitan komersial,
+      bukan dari lembaga penelitian — perlakukan sebagai perkiraan.
     </div>
+
+    <div class="alert alert-info">
+      <b>Sudah punya tanaman dan ingin membandingkan?</b> Lihat tab <b>Varietas Lokal</b> untuk
+      varietas unggul nasional Indonesia (Jestro, Prabu Bestari, Probolinggo Biru 81) yang sudah
+      dirilis Kementerian Pertanian dan beradaptasi dengan iklim tropis.
+    </div>
+  </section>
+
+  <!-- ============ VARIETAS LOKAL ============ -->
+  <section class="panel" id="lokal">
+    <h2 class="section-title">Varietas Lokal &amp; Unggul Nasional</h2>
+    <p class="muted">Indonesia sebenarnya sudah punya varietas anggur sendiri yang dilepas Kementerian
+    Pertanian dan beradaptasi dengan iklim tropis — beberapa bahkan lebih cepat berbuah daripada
+    varietas impor. Kalau Jupiter dan Ninel sulit didapat atau kurang cocok di lokasi Anda,
+    varietas di bawah ini layak dipertimbangkan.</p>
+
+    <div class="alert alert-info">
+      <b>Kenapa ini penting.</b> Pasuruan sendiri termasuk sentra anggur Jawa Timur
+      (bersama Kediri, Probolinggo, dan Situbondo). Ada varietas lokal yang sudah puluhan tahun
+      terbukti tumbuh di wilayah ini, dan varietas unggul baru yang dirancang khusus untuk iklim Indonesia.
+    </div>
+
+    <div class="grid-2" id="lokal-body"></div>
   </section>
 
   <!-- ============ KALENDER ============ -->
   <section class="panel" id="kalender">
     <h2 class="section-title">Kalender 12 Bulan</h2>
-    <p class="muted">Disusun untuk pola musim Pasuruan: hujan November–April, kemarau Mei–Oktober.
-    Siklus panen pertama dipusatkan di Juni, siklus kedua di November–Desember.</p>
+    <p class="muted">Disusun dari data curah hujan Pasuruan (Bangil) yang sebenarnya:
+    <b>hujan penuh November–April</b> (terbasah Januari, 362 mm) dan <b>kemarau Juni–September</b>
+    (terkering Agustus, hanya 8 mm). Karena itu jadwal panen dipusatkan di
+    <b>Agustus–September</b> dan <b>Desember–Januari</b>. Data lengkapnya ada di tab
+    <b>Riset &amp; Sumber</b>.</p>
 
     <div class="month-nav" id="month-nav"></div>
     <div id="month-detail"></div>
@@ -239,6 +270,31 @@
     </div>
   </section>
 
+  <!-- ============ RISET & SUMBER ============ -->
+  <section class="panel" id="riset">
+    <h2 class="section-title">Riset &amp; Sumber</h2>
+    <p class="muted">Bagian ini menunjukkan dasar dari setiap angka dan anjuran di situs ini.
+    Tujuannya sederhana: Anda bisa menilai sendiri mana yang didukung sumber resmi dan mana
+    yang masih perkiraan atau praktik lapangan.</p>
+
+    <div class="alert alert-warn">
+      <b>Kenapa ada klaim yang ditandai "belum terverifikasi".</b> Sebagian angka budidaya anggur
+      tropis beredar luas di internet tanpa sumber yang bisa dilacak — biasanya berasal dari
+      penjual bibit. Daripada menyembunyikannya, kami menandainya terbuka supaya Anda tidak
+      mengambil keputusan penting berdasarkan angka yang belum terbukti.
+    </div>
+
+    <h3 class="sub-title">Iklim Pasuruan (Bangil) — data bulanan</h3>
+    <p class="muted">Sumber: Climate-Data.org (Bangil) &amp; BMKG, normal 1991–2020.</p>
+    <div id="iklim-body"></div>
+
+    <h3 class="sub-title">Status setiap klaim</h3>
+    <p class="muted">Terverifikasi = didukung sumber resmi atau publikasi ilmiah.
+    Praktik lapangan = kebiasaan pekebun yang masuk akal tapi belum diuji terkontrol.
+    Belum terverifikasi = tidak ditemukan sumber yang bisa dilacak.</p>
+    <div id="riset-body"></div>
+  </section>
+
   <!-- ============ PERPUSTAKAAN ============ -->
   <section class="panel" id="perpustakaan">
     <h2 class="section-title">Perpustakaan</h2>
@@ -279,7 +335,8 @@
 <footer class="site-footer">
   <div class="wrap">
     <p><b>Sistem Budidaya Anggur Jupiter &amp; Ninel</b> — disusun untuk pekebun pekarangan di Pasuruan, Jawa Timur.</p>
-    <p class="muted small">Dibangun dari literatur hortikultura, deskripsi breeder, dan pedoman Kementerian Pertanian.
+    <p class="muted small">Dibangun dari literatur hortikultura, sumber resmi pemulia varietas, dan pedoman
+    Kementerian Pertanian. Setiap klaim diberi status keterverifikasian di tab Riset &amp; Sumber.
     Gunakan sebagai panduan kerja, bukan sebagai pengganti uji lapangan.</p>
   </div>
 </footer>
